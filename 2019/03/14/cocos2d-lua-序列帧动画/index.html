@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140414783-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140414783-1');
+  </script>
+
+
+  
+  <meta charset="utf-8">
+  
+  <title>cocos2d-lua 序列帧动画 | 然亦伞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="序列帧动画创建步骤1、从精灵表单批量导入精灵帧到引擎的帧缓冲精灵表单：由一张存储一组精灵纹理的大图（纹理文件）和一个对应的plist描述文件组成。可由texturepacker软件制作。 display.addSpriteFrames(&amp;quot;stars.plist&amp;quot;,&amp;quot;stars.pvr.ccz&amp;quot;) 2、创建序列帧数组引擎的帧缓冲中的精灵帧图片可以用来做帧动画，">
+<meta name="keywords" content="Lua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos2d-lua 序列帧动画">
+<meta property="og:url" content="http://ranyisan.tk/2019/03/14/cocos2d-lua-序列帧动画/index.html">
+<meta property="og:site_name" content="然亦伞">
+<meta property="og:description" content="序列帧动画创建步骤1、从精灵表单批量导入精灵帧到引擎的帧缓冲精灵表单：由一张存储一组精灵纹理的大图（纹理文件）和一个对应的plist描述文件组成。可由texturepacker软件制作。 display.addSpriteFrames(&amp;quot;stars.plist&amp;quot;,&amp;quot;stars.pvr.ccz&amp;quot;) 2、创建序列帧数组引擎的帧缓冲中的精灵帧图片可以用来做帧动画，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T21:49:10.668Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cocos2d-lua 序列帧动画">
+<meta name="twitter:description" content="序列帧动画创建步骤1、从精灵表单批量导入精灵帧到引擎的帧缓冲精灵表单：由一张存储一组精灵纹理的大图（纹理文件）和一个对应的plist描述文件组成。可由texturepacker软件制作。 display.addSpriteFrames(&amp;quot;stars.plist&amp;quot;,&amp;quot;stars.pvr.ccz&amp;quot;) 2、创建序列帧数组引擎的帧缓冲中的精灵帧图片可以用来做帧动画，">
+  
+  <link rel="stylesheet" href="/css/index.css">
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+ --></head>
+</html>
+<body style="
+
+
+  background-color: #eff0f6
+
+
+">
+  <div id="container">
+    <nav id="nav">
+  <header class="header">
+    <a href="/" class="title">然亦伞</a>
+  </header>
+  <div class="ctnWrap">
+    <div class="icons">
+      
+    </div>
+    <div class="menu">
+      
+        
+            <a href="/" class="nav-menu ">HOME</a>
+          
+        
+            <a href="/archives" class="nav-menu ">ARCHIVE</a>
+          
+        
+            <a href="/categories" class="nav-menu ">CATEGORY</a>
+          
+        
+            <a href="/tags" class="nav-menu ">TAG</a>
+          
+        
+            <a href="/about" class="nav-menu ">ABOUT</a>
+          
+        
+            <a href="/search" class="nav-menu ">SEARCH</a>
+          
+        
+      
+    </div>
+  </div>
+</nav>
+    <div id="main"><section class="article">
+  <h2 class="title">cocos2d-lua 序列帧动画</h2>
+  <p class="sub">
+    3月 14, 2019
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_page_pv"> 阅读量 <span id="busuanzi_value_page_pv"></span></span>
+    
+  </p>
+  <article class="content">
+    <h2 id="序列帧动画创建步骤"><a href="#序列帧动画创建步骤" class="headerlink" title="序列帧动画创建步骤"></a>序列帧动画创建步骤</h2><p>1、从精灵表单批量导入精灵帧到引擎的帧缓冲<br>精灵表单：由一张存储一组精灵纹理的大图（纹理文件）和一个对应的plist描述文件组成。可由texturepacker软件制作。</p>
+<pre><code>display.addSpriteFrames(&quot;stars.plist&quot;,&quot;stars.pvr.ccz&quot;)
+</code></pre><p>2、创建序列帧数组<br>引擎的帧缓冲中的精灵帧图片可以用来做帧动画，也可以用来设置给某个静态精灵（引用帧缓冲中的图片，图片名称前要加#，以区别于从res资源中获取图片）。</p>
+<pre><code>local frames = display.newFrames(&quot;star%02d.png&quot;,1,9)
+</code></pre><p>3、利用序列帧数组创建帧动画对象Animation<br>Animation 是描述帧动画的对象</p>
+<pre><code>local animation = display.newAnimation(frames,0.2)
+</code></pre><p>4、通过Animation创建动作对象Animate<br>1、Animation对象不能直接被节点runAction播放，因为它不是动作对象Action，所以需要创建一个Animate动作对象来赋予节点<br>2、如果只需要简单地让一个精灵播放动画，可直接使用cocos2d-lua封装的方法，不比繁琐地创建Action<br>Sprite:playAnimationOnce(animation,removeWhenFinished,onComplete,delay)</p>
+<pre><code>--创建动作Action
+local animate = cc.Animate:create(animation)
+</code></pre><p>5、创建精灵并运行动作</p>
+<pre><code>local sprite = display.newSprite(&quot;#star01.png&quot;)
+:center()
+:addTo(self.backgroundLayer)
+:runAction(animate)
+</code></pre><p>6、帧动画缓冲<br>每次创建帧动画比较繁琐，所以我们可以将常用的Animation缓存起来，后面每次使用，只需从引擎的缓冲中拿。</p>
+<pre><code>-- 帧动画缓存的代码
+
+function MainScene:animationCacheStar()
+    -- body
+    self.backgroundLayer = display.newColorLayer(cc.c3b(255,200,2))
+    :addTo(self)
+
+    --将帧序列加入引擎缓冲
+    display.addSpriteFrames(&quot;stars.plist&quot;,&quot;stars.pvr.ccz&quot;)
+
+    --创建精灵
+    local sprite = display.newSprite(&quot;#001.png&quot;)
+    :center()
+    :addTo(self.backgroundLayer)
+
+    --创建帧动画
+    local frames = display.newFrames(&quot;%03d.png&quot;,1,4)
+    local animation = display.newAnimation(frames,0.2)
+
+    -- 缓存帧动画
+    display.setAnimationCache(&quot;stars&quot;,animation)
+
+    --从cache中获取缓存的帧动画
+    animation = display.getAnimationCache(&quot;stars&quot;)
+
+    --清除帧动画缓存
+    display.removeAnimationCache(&quot;stars&quot;)
+
+    --为精灵添加动画帧动作
+    sprite:playAnimationOnce(animation,false,function ()
+        -- body
+        print(&quot;complete&quot;)
+    end,1)
+end
+</code></pre><p>帧动画Animation不缓存的完整代码</p>
+<pre><code>local MainScene = class(&quot;MainScene&quot;, function()
+    return display.newScene(&quot;MainScene&quot;)
+end)
+
+function MainScene:ctor()
+
+    self:animationStar()
+
+end
+
+function MainScene:onEnter()
+end
+
+function MainScene:onExit()
+end
+
+function MainScene:animationStar()
+    -- body
+    self.backgroundLayer = display.newColorLayer(cc.c4b(255,0,0,255))
+    self.backgroundLayer:addTo(self)
+    --引入精灵表单（纹理文件+plist描述文件）
+    display.addSpriteFrames(&quot;stars.plist&quot;,&quot;stars.pvr.ccz&quot;)
+    --
+    local frames = display.newFrames(&quot;%03d.png&quot;,1,4)
+    local animation = display.newAnimation(frames,0.2)
+    local animate = cc.Animate:create(animation)
+    local sprite = display.newSprite(&quot;#001.png&quot;)
+          :center()
+          :addTo(self.backgroundLayer)
+          :runAction(animate)
+
+end
+
+return MainScene
+</code></pre>
+  </article>
+  <div class="comments"></div>
+  
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script>
+       new Valine({
+            el: '.comments',
+            appId: 'nTjHpFqxjOTtRsli4znbCbUI-gzGzoHsz',
+            appKey: 'QWPj5eE5Oe8oDr2dnQ0ku21R',
+            notify: false,
+            verify: true,
+            pageSize: 10,
+            placeholder: 'just go go' 
+        });
+    </script> 
+  
+  <footer class="f-cf">
+    
+      <a href="/2019/03/14/cocos-2d-lua全局调度器与节点调度器/" class="link f-fl">⟵cocos-2d lua全局调度器与节点调度器</a>
+    
+    
+      <a href="/2019/03/13/cocos2d-lua-ActionEase缓冲/" class="link f-fr">cocos2d-lua ActionEase缓冲⟶</a>
+    
+  </footer>
+</section></div>
+    <footer id="footer" class="f-cf">
+  ranyisan@163.com
+  
+  <span class="copyright">All rights reserved @ranyisan</span>
+</footer>
+  </div>
+</body>
+</html>

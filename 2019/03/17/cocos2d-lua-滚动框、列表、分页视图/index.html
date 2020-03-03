@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140414783-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140414783-1');
+  </script>
+
+
+  
+  <meta charset="utf-8">
+  
+  <title>cocos2d-lua 滚动框、列表、分页视图 | 然亦伞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="dump函数，导出一个table类型的信息到log界面 -- 导出所选页面的所有响应了的响应事件的evnet dump(event,&amp;quot;MainScene - event:&amp;quot;) UIScrollViewuiscrollView内部只能添加一个滚动节点，内部节点相对与滚动框的父视图锚点固定为（0，0）不可修改 function MainScene:creatScrollView()">
+<meta name="keywords" content="Lua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos2d-lua 滚动框、列表、分页视图">
+<meta property="og:url" content="http://ranyisan.tk/2019/03/17/cocos2d-lua-滚动框、列表、分页视图/index.html">
+<meta property="og:site_name" content="然亦伞">
+<meta property="og:description" content="dump函数，导出一个table类型的信息到log界面 -- 导出所选页面的所有响应了的响应事件的evnet dump(event,&amp;quot;MainScene - event:&amp;quot;) UIScrollViewuiscrollView内部只能添加一个滚动节点，内部节点相对与滚动框的父视图锚点固定为（0，0）不可修改 function MainScene:creatScrollView()">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T21:49:11.693Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cocos2d-lua 滚动框、列表、分页视图">
+<meta name="twitter:description" content="dump函数，导出一个table类型的信息到log界面 -- 导出所选页面的所有响应了的响应事件的evnet dump(event,&amp;quot;MainScene - event:&amp;quot;) UIScrollViewuiscrollView内部只能添加一个滚动节点，内部节点相对与滚动框的父视图锚点固定为（0，0）不可修改 function MainScene:creatScrollView()">
+  
+  <link rel="stylesheet" href="/css/index.css">
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+ --></head>
+</html>
+<body style="
+
+
+  background-color: #eff0f6
+
+
+">
+  <div id="container">
+    <nav id="nav">
+  <header class="header">
+    <a href="/" class="title">然亦伞</a>
+  </header>
+  <div class="ctnWrap">
+    <div class="icons">
+      
+    </div>
+    <div class="menu">
+      
+        
+            <a href="/" class="nav-menu ">HOME</a>
+          
+        
+            <a href="/archives" class="nav-menu ">ARCHIVE</a>
+          
+        
+            <a href="/categories" class="nav-menu ">CATEGORY</a>
+          
+        
+            <a href="/tags" class="nav-menu ">TAG</a>
+          
+        
+            <a href="/about" class="nav-menu ">ABOUT</a>
+          
+        
+            <a href="/search" class="nav-menu ">SEARCH</a>
+          
+        
+      
+    </div>
+  </div>
+</nav>
+    <div id="main"><section class="article">
+  <h2 class="title">cocos2d-lua 滚动框、列表、分页视图</h2>
+  <p class="sub">
+    3月 17, 2019
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_page_pv"> 阅读量 <span id="busuanzi_value_page_pv"></span></span>
+    
+  </p>
+  <article class="content">
+    <p>dump函数，导出一个table类型的信息到log界面</p>
+<pre><code>-- 导出所选页面的所有响应了的响应事件的evnet
+dump(event,&quot;MainScene - event:&quot;)
+</code></pre><h2 id="UIScrollView"><a href="#UIScrollView" class="headerlink" title="UIScrollView"></a>UIScrollView</h2><p>uiscrollView内部只能添加一个滚动节点，内部节点相对与滚动框的父视图锚点固定为（0，0）不可修改</p>
+<pre><code>function MainScene:creatScrollView()
+    -- body
+    local sprite = display.newSprite(&quot;scroll/cloud.png&quot;)
+    sprite:pos(display.cx,display.cy)
+
+    cc.ui.UIScrollView.new({
+        direction = cc.ui.UIScrollView.DIRECTION_BOTH,
+        viewRect = cc.rect(0,0,320,480),--设置显示区域
+        scrollbarImgH = &quot;scroll/barH.png&quot;,
+        scrollbarImgV = &quot;scroll/bar.png&quot;,
+        bgColor = cc.c4b(255,255,255,255), 
+        })
+    :addScrollNode(sprite)--只能添加一个滚动节点
+    :onScroll(function ( event ) --滚动监听事件
+        -- body
+        print(&quot;ScrollListener:&quot;..event.name..&quot; y=&quot;..event.y)
+    end)
+    :pos(display.cx-160,display.cy-240)
+    :setBounceable(false) -- 回弹效果默认开启
+    :addTo(self)
+end
+</code></pre><h2 id="UIListView"><a href="#UIListView" class="headerlink" title="UIListView"></a>UIListView</h2><p>uilistView是uiscrollView的扩展</p>
+<pre><code>function MainScene:creatListView()
+    -- body
+    local function touchListener(event)
+        -- 列表点击事件
+        local listView = event.listView
+        if &quot;clicked&quot; == event.name then
+            if 3 == event.itemPos then --点击的是第几个item
+            listView:removeItem(event.item,true) --移除被点击的item
+            end
+        end
+    end
+
+    self.lv = cc.ui.UIListView.new({
+        -- bgColor = cc.c4b(200,200,200,200),
+        bg = &quot;list/sunset.png&quot;,
+        bgScale9 = true,
+        viewRect = cc.rect(40,80,500,400),
+        direction = cc.ui.UIScrollView.DIRECTION_VERTICAL,
+        scrollbarImgV = &quot;list/bar.bg&quot;,
+        })
+    :onTouch(touchListener)--添加item点击监听
+    :addTo(self)
+
+    --添加item
+    for i=1,15 do
+        local item = self.lv:newItem()
+        item:setItemSize(400,40)
+
+        local content
+        if 2==i then
+            content = cc.ui.UIPushButton.new(&quot;list/GreenButton.png&quot;,{scale9=true})
+            :setButtonSize(300,40)
+            :setButtonLabel(cc.ui.UILabel.new({
+                text = &quot;点击改变大小的item--&quot;..i,
+                size = 16,
+                color = display.COLOR_BLUE,
+                }))
+            :onButtonPressed(function ( event )
+                --按钮按下监听
+                event.target:getButtonLabel():setColor(display.COLOR_RED)
+            end)
+            :onButtonRelease(function ( event )
+                --按钮按下释放监听
+                event.target:getButtonLabel():setColor(display.COLOR_BLUE)
+            end)
+            :onButtonClicked(function ( event )
+                -- 按钮点击监听,改变item大小
+
+                if not self.lv:isItemInViewRect(item) then 
+                    --判断item是否在显示范围
+                    print (&quot;item not in view rect&quot;)
+                    return
+                end
+
+                --如果item在显示范围，则进行后面改变大小操作
+                print (&quot;item button clicked&quot;)
+                local _,h = item:getItemSize()
+                if 40 == h then
+                    item:setItemSize(400,80)
+                else 
+                    item:setItemSize(400,40)
+                end
+            end)
+
+        elseif 3 == i then
+            content = cc.ui.UILabel.new({
+                text = &quot;点击删除item--&quot;..i,
+                size = 20,
+                align = cc.ui.TEXT_ALIGN_CENTER,
+                color = display.COLOR_BLACK,
+            })
+
+        elseif 4 == i then
+            content = cc.ui.UILabel.new({
+                text = &quot;有背景图item--&quot;..i,
+                size = 20,
+                align = cc.ui.TEXT_ALIGN_CENTER,
+                color = display.COLOR_BLACK,
+            })
+            item:setBg(&quot;list/YellowBlock.png&quot;)
+
+        else
+            content = cc.ui.UILabel.new({
+                text = &quot;item--&quot;..i,
+                size = 20,
+                align = cc.ui.TEXT_ALIGN_CENTER,
+                color = display.COLOR_BLACK,
+                })
+        end
+
+        item:addContent(content)
+
+        self.lv:addItem(item)
+    end
+
+    --刷新listView
+    self.lv:reload()
+
+end
+</code></pre><h2 id="UIPageView"><a href="#UIPageView" class="headerlink" title="UIPageView"></a>UIPageView</h2><p>uipageView类似ios的collectionView与pageView的结合。<br>每页显示一个由纵向和横向的一组item组成的矩阵。<br>column：每一页的列数默认1<br>row：每一页的行数默认1<br>columnSpace: 列间隙<br>rowSpace: 行间隙<br>viewRect():显示区域默认全屏<br>bCirc:  页面是否循环</p>
+<pre><code>function MainScene:createPageView()
+
+    local function touchListener( event )
+        -- item点击事件.dump函数，导出一个table对象的信息到log界面
+        dump(event,&quot;MainScene - event:&quot;)
+    end
+
+    --创建pageView
+
+    self.pv = cc.ui.UIPageView.new({
+        viewRect = cc.rect(80,240,480,480),
+        column = 3,row = 3,
+        padding = {left = 20,right = 20,top = 20,bottom = 20},
+        columnSpace = 10,rowSpace = 10,bCirc = true,        
+        })
+    :onTouch(touchListener)
+    :addTo(self)
+
+    --添加item
+
+    for i = 1,18 do
+        local item = self.pv:newItem()
+        local content = cc.LayerColor:create(
+            cc.c4b(math.random(250),math.random(250),math.random(250),250))
+        content:setContentSize(240,240)
+        content:setTouchEnabled(false)
+        item:addChild(content)
+        self.pv:addItem(item)
+    end
+
+    self.pv:reload()
+
+end
+</code></pre>
+  </article>
+  <div class="comments"></div>
+  
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script>
+       new Valine({
+            el: '.comments',
+            appId: 'nTjHpFqxjOTtRsli4znbCbUI-gzGzoHsz',
+            appKey: 'QWPj5eE5Oe8oDr2dnQ0ku21R',
+            notify: false,
+            verify: true,
+            pageSize: 10,
+            placeholder: 'just go go' 
+        });
+    </script> 
+  
+  <footer class="f-cf">
+    
+      <a href="/2019/03/17/cocos2d-lua瓦片地图/" class="link f-fl">⟵cocos2d-lua瓦片地图</a>
+    
+    
+      <a href="/2019/03/17/cocos2d-lua-UI控件之输入框、进度条、滑动条/" class="link f-fr">cocos2d-lua UI控件之输入框、进度条、滑动条⟶</a>
+    
+  </footer>
+</section></div>
+    <footer id="footer" class="f-cf">
+  ranyisan@163.com
+  
+  <span class="copyright">All rights reserved @ranyisan</span>
+</footer>
+  </div>
+</body>
+</html>

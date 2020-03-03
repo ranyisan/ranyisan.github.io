@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140414783-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140414783-1');
+  </script>
+
+
+  
+  <meta charset="utf-8">
+  
+  <title>cocos-2d lua全局调度器与节点调度器 | 然亦伞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="全局调度器调度器用于周期性处理事务，全局调度器全局保活。需要手动加载并手动销毁。（延迟调度器会在调用后自动销毁，但不完全可靠）使用场景：在线游戏的网络心跳包，全局变量的刷新。自定义调度器可以指定调用回调函数的时间。而延时调度器可以指定调用时间，且仅执行一次回调函数。全局调度器及节点帧调度器的回调函数的参数只有一个dt，表示时间间隔的。帧调度器监听每一帧的刷新，即帧刷新时调用回调函数 functio">
+<meta name="keywords" content="Lua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos-2d lua全局调度器与节点调度器">
+<meta property="og:url" content="http://ranyisan.tk/2019/03/14/cocos-2d-lua全局调度器与节点调度器/index.html">
+<meta property="og:site_name" content="然亦伞">
+<meta property="og:description" content="全局调度器调度器用于周期性处理事务，全局调度器全局保活。需要手动加载并手动销毁。（延迟调度器会在调用后自动销毁，但不完全可靠）使用场景：在线游戏的网络心跳包，全局变量的刷新。自定义调度器可以指定调用回调函数的时间。而延时调度器可以指定调用时间，且仅执行一次回调函数。全局调度器及节点帧调度器的回调函数的参数只有一个dt，表示时间间隔的。帧调度器监听每一帧的刷新，即帧刷新时调用回调函数 functio">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T21:48:51.579Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cocos-2d lua全局调度器与节点调度器">
+<meta name="twitter:description" content="全局调度器调度器用于周期性处理事务，全局调度器全局保活。需要手动加载并手动销毁。（延迟调度器会在调用后自动销毁，但不完全可靠）使用场景：在线游戏的网络心跳包，全局变量的刷新。自定义调度器可以指定调用回调函数的时间。而延时调度器可以指定调用时间，且仅执行一次回调函数。全局调度器及节点帧调度器的回调函数的参数只有一个dt，表示时间间隔的。帧调度器监听每一帧的刷新，即帧刷新时调用回调函数 functio">
+  
+  <link rel="stylesheet" href="/css/index.css">
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+ --></head>
+</html>
+<body style="
+
+
+  background-color: #eff0f6
+
+
+">
+  <div id="container">
+    <nav id="nav">
+  <header class="header">
+    <a href="/" class="title">然亦伞</a>
+  </header>
+  <div class="ctnWrap">
+    <div class="icons">
+      
+    </div>
+    <div class="menu">
+      
+        
+            <a href="/" class="nav-menu ">HOME</a>
+          
+        
+            <a href="/archives" class="nav-menu ">ARCHIVE</a>
+          
+        
+            <a href="/categories" class="nav-menu ">CATEGORY</a>
+          
+        
+            <a href="/tags" class="nav-menu ">TAG</a>
+          
+        
+            <a href="/about" class="nav-menu ">ABOUT</a>
+          
+        
+            <a href="/search" class="nav-menu ">SEARCH</a>
+          
+        
+      
+    </div>
+  </div>
+</nav>
+    <div id="main"><section class="article">
+  <h2 class="title">cocos-2d lua全局调度器与节点调度器</h2>
+  <p class="sub">
+    3月 14, 2019
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_page_pv"> 阅读量 <span id="busuanzi_value_page_pv"></span></span>
+    
+  </p>
+  <article class="content">
+    <h2 id="全局调度器"><a href="#全局调度器" class="headerlink" title="全局调度器"></a>全局调度器</h2><p>调度器用于周期性处理事务，全局调度器全局保活。需要手动加载并手动销毁。（延迟调度器会在调用后自动销毁，但不完全可靠）<br>使用场景：在线游戏的网络心跳包，全局变量的刷新。<br>自定义调度器可以指定调用回调函数的时间。<br>而延时调度器可以指定调用时间，且仅执行一次回调函数。<br>全局调度器及节点帧调度器的回调函数的参数只有一个dt，表示时间间隔的。<br>帧调度器监听每一帧的刷新，即帧刷新时调用回调函数</p>
+<pre><code>function MainScene.scheduleGlobal()
+    local scheduler = require(cc.PACKAGE_NAME..&quot;.scheduler&quot;)
+    local function onInterval(dt)
+        print (&quot;update&quot;)
+    end
+     --全局帧调度器
+    scheduler.scheduleUpdateGlobal(onInterval)
+    --全局自定义调度器
+    scheduler.scheduleGloabl(onInterval,0.5)
+    --全局延时调度器(指定时间后只会执行一次回调函数)
+    scheduler.performWithDelayGlobal(onInterval,2)
+    --scheduler.unscheduleGloabl()
+end
+</code></pre><h2 id="节点调度器"><a href="#节点调度器" class="headerlink" title="节点调度器"></a>节点调度器</h2><p>节点调度器是节点基础类Node提供的方法，生命周期跟随Node，Node销毁时会自动销毁其名下的所有节点调度器。不需要手动销毁。</p>
+<pre><code>function MainScene.schedulerNode()
+    -- 节点自定义调度器
+    local action = node:schedule(function ()
+        -- body
+        print(&quot;scheduler&quot;)
+    end,1.0)
+    -- 节点延时调度器(指定时间后执行一次回调函数)
+    node:performWithDelay(function ()
+        -- body
+        print (&quot;performWithDelay&quot;)
+    end,1.0)
+end
+</code></pre>
+  </article>
+  <div class="comments"></div>
+  
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script>
+       new Valine({
+            el: '.comments',
+            appId: 'nTjHpFqxjOTtRsli4znbCbUI-gzGzoHsz',
+            appKey: 'QWPj5eE5Oe8oDr2dnQ0ku21R',
+            notify: false,
+            verify: true,
+            pageSize: 10,
+            placeholder: 'just go go' 
+        });
+    </script> 
+  
+  <footer class="f-cf">
+    
+      <a href="/2019/03/14/cocos2d-lua节点事件/" class="link f-fl">⟵cocos2d-lua节点事件</a>
+    
+    
+      <a href="/2019/03/14/cocos2d-lua-序列帧动画/" class="link f-fr">cocos2d-lua 序列帧动画⟶</a>
+    
+  </footer>
+</section></div>
+    <footer id="footer" class="f-cf">
+  ranyisan@163.com
+  
+  <span class="copyright">All rights reserved @ranyisan</span>
+</footer>
+  </div>
+</body>
+</html>

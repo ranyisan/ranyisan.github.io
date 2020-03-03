@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140414783-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140414783-1');
+  </script>
+
+
+  
+  <meta charset="utf-8">
+  
+  <title>cocos2d-lua 剪裁节点与渲染纹理 | 然亦伞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="剪裁节点根据一个模版，来过滤目标节点的纹理显示区域。 function MainScene:ClippingNode()     -- 按钮高光移动特效     display.newColorLayer(cc.c4b(20,9,39,255)):addTo(self)     local lightNode = display.newNode()     :center()     :addTo">
+<meta name="keywords" content="Lua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos2d-lua 剪裁节点与渲染纹理">
+<meta property="og:url" content="http://ranyisan.tk/2019/03/26/cocos2d-lua-剪裁节点与渲染纹理/index.html">
+<meta property="og:site_name" content="然亦伞">
+<meta property="og:description" content="剪裁节点根据一个模版，来过滤目标节点的纹理显示区域。 function MainScene:ClippingNode()     -- 按钮高光移动特效     display.newColorLayer(cc.c4b(20,9,39,255)):addTo(self)     local lightNode = display.newNode()     :center()     :addTo">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T21:49:09.467Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cocos2d-lua 剪裁节点与渲染纹理">
+<meta name="twitter:description" content="剪裁节点根据一个模版，来过滤目标节点的纹理显示区域。 function MainScene:ClippingNode()     -- 按钮高光移动特效     display.newColorLayer(cc.c4b(20,9,39,255)):addTo(self)     local lightNode = display.newNode()     :center()     :addTo">
+  
+  <link rel="stylesheet" href="/css/index.css">
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+ --></head>
+</html>
+<body style="
+
+
+  background-color: #eff0f6
+
+
+">
+  <div id="container">
+    <nav id="nav">
+  <header class="header">
+    <a href="/" class="title">然亦伞</a>
+  </header>
+  <div class="ctnWrap">
+    <div class="icons">
+      
+    </div>
+    <div class="menu">
+      
+        
+            <a href="/" class="nav-menu ">HOME</a>
+          
+        
+            <a href="/archives" class="nav-menu ">ARCHIVE</a>
+          
+        
+            <a href="/categories" class="nav-menu ">CATEGORY</a>
+          
+        
+            <a href="/tags" class="nav-menu ">TAG</a>
+          
+        
+            <a href="/about" class="nav-menu ">ABOUT</a>
+          
+        
+            <a href="/search" class="nav-menu ">SEARCH</a>
+          
+        
+      
+    </div>
+  </div>
+</nav>
+    <div id="main"><section class="article">
+  <h2 class="title">cocos2d-lua 剪裁节点与渲染纹理</h2>
+  <p class="sub">
+    3月 26, 2019
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_page_pv"> 阅读量 <span id="busuanzi_value_page_pv"></span></span>
+    
+  </p>
+  <article class="content">
+    <h2 id="剪裁节点"><a href="#剪裁节点" class="headerlink" title="剪裁节点"></a>剪裁节点</h2><p>根据一个模版，来过滤目标节点的纹理显示区域。</p>
+<pre><code>function MainScene:ClippingNode()
+    -- 按钮高光移动特效
+    display.newColorLayer(cc.c4b(20,9,39,255)):addTo(self)
+    local lightNode = display.newNode()
+    :center()
+    :addTo(self)
+
+    local button = cc.ui.UIPushButton.new({normal = &quot;wechat.png&quot;},{scale9 = false})
+    :onButtonClicked(function ( event )
+        print(&quot;button clicked&quot;)
+    end)
+    :addTo(lightNode)
+
+    -- cliping for light
+    local stencil = display.newSprite(&quot;wechat.png&quot;)
+    local light = display.newSprite(&quot;light.png&quot;)
+    local clip = cc.ClippingNode:create(stencil)
+    clip:setAlphaThreshold(0.08) -- alpha阀值大于0.08部分才绘制
+    -- clip:setInverted(ture) --alpha阀值取反
+    clip:addChild(light)
+    clip:addTo(lightNode)
+
+    --moving action
+    local size = stencil:getContentSize()
+    local sizeLight = light:getContentSize()
+    light:pos(-size.width/2-sizeLight.width,0)
+    light:runAction(cc.RepeatForever:create(
+        cc.Sequence:create(
+                cc.MoveTo:create(1.5,cc.p(size.width/2 + sizeLight.width,0)),
+                cc.Place:create(cc.p(-size.width/2-sizeLight.width,0)),
+                cc.DelayTime:create(1)
+            )
+        )
+    )
+
+end
+</code></pre><h2 id="渲染纹理"><a href="#渲染纹理" class="headerlink" title="渲染纹理"></a>渲染纹理</h2><p>渲染纹理RenderTextures是一种特殊纹理，由运行时产生，可动态更新修改</p>
+<pre><code>function MainScene:RenderTexture()
+    -- 实现一个橡皮擦特效，鼠标点击区域的迷雾会被清除掉，迷雾后面图片完全显示出来
+
+    -- background
+    display.newSprite(&quot;HelloWorld.png&quot;)
+    :addTo(self)
+    :center()
+
+    -- 创建屏幕大小的渲染纹理
+    self.fbo = cc.RenderTexture:create(display.width,display.height)
+    :center()
+    :addTo(self)
+    -- 将这个纹理使用透明度50%的黑色背景填充 OpenGL颜色表示法取值0～1
+    self.fbo:clear(0,0,0,0.5)
+
+    -- eraser NOR add to self
+    -- self.eraser是一个实心区域，透明度为0的黑色背景填充，充当橡皮擦角色不直接显示在屏幕上
+    self.eraser = display.newSolidCircle(20,{color = cc.c4f(1,1,1,0)})
+    -- 未引用对象调用retain()来保持其不被引擎的自动回收池回收
+    self.eraser:retain()
+    -- setBlendFunc是橡皮擦关键，表示渲染混合时，取橡皮擦当前像素来取代与之混合的同位置目标像素，参数表示混合模式
+    self.eraser:setBlendFunc(gl.ONE,gl.ZERO)
+
+    --设置容许触摸
+    self:setTouchEnabled(true)
+    self:addNodeEventListener(cc.NODE_TOUCH_EVENT,function ( event )
+        -- body
+        if event.name == &quot;began&quot; then
+            return true
+        end
+
+        if event.name == &quot;moved&quot; then
+            self.eraser:pos(event.x,event.y)
+            -- 手动开启对RenderTexture对象的渲染
+            self.fbo:begin()
+            -- 将橡皮擦纹理渲染到RenderTexture中
+            self.eraser:visit()
+            -- 结束渲染
+            self.fbo:endToLua()
+        end
+    end)
+
+end
+</code></pre>
+  </article>
+  <div class="comments"></div>
+  
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script>
+       new Valine({
+            el: '.comments',
+            appId: 'nTjHpFqxjOTtRsli4znbCbUI-gzGzoHsz',
+            appKey: 'QWPj5eE5Oe8oDr2dnQ0ku21R',
+            notify: false,
+            verify: true,
+            pageSize: 10,
+            placeholder: 'just go go' 
+        });
+    </script> 
+  
+  <footer class="f-cf">
+    
+      <a href="/2019/03/26/cocos2d-lua-自定义摄像机/" class="link f-fl">⟵cocos2d-lua 自定义摄像机</a>
+    
+    
+      <a href="/2019/03/26/cocos2d-lua-Spine骨骼动画与粒子系统/" class="link f-fr">cocos2d-lua Spine骨骼动画与粒子系统⟶</a>
+    
+  </footer>
+</section></div>
+    <footer id="footer" class="f-cf">
+  ranyisan@163.com
+  
+  <span class="copyright">All rights reserved @ranyisan</span>
+</footer>
+  </div>
+</body>
+</html>

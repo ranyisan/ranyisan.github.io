@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140414783-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140414783-1');
+  </script>
+
+
+  
+  <meta charset="utf-8">
+  
+  <title>Lua String函数 | 然亦伞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="local str = “hellolua，helloworld”–返回索引，找不到返回nilprint(string.find(str,”hello”))–匹配返回字符串，一般用于判断字符串是否存在print(string.match(str,”hello”))– 字符串截取(str,位置(包含当前位置),长度（负数反向,-1表示截取全部）)print(string.sub(str,5,-1))">
+<meta name="keywords" content="Lua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua String函数">
+<meta property="og:url" content="http://ranyisan.tk/2019/03/12/Lua-String函数/index.html">
+<meta property="og:site_name" content="然亦伞">
+<meta property="og:description" content="local str = “hellolua，helloworld”–返回索引，找不到返回nilprint(string.find(str,”hello”))–匹配返回字符串，一般用于判断字符串是否存在print(string.match(str,”hello”))– 字符串截取(str,位置(包含当前位置),长度（负数反向,-1表示截取全部）)print(string.sub(str,5,-1))">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T21:49:29.455Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lua String函数">
+<meta name="twitter:description" content="local str = “hellolua，helloworld”–返回索引，找不到返回nilprint(string.find(str,”hello”))–匹配返回字符串，一般用于判断字符串是否存在print(string.match(str,”hello”))– 字符串截取(str,位置(包含当前位置),长度（负数反向,-1表示截取全部）)print(string.sub(str,5,-1))">
+  
+  <link rel="stylesheet" href="/css/index.css">
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+ --></head>
+</html>
+<body style="
+
+
+  background-color: #eff0f6
+
+
+">
+  <div id="container">
+    <nav id="nav">
+  <header class="header">
+    <a href="/" class="title">然亦伞</a>
+  </header>
+  <div class="ctnWrap">
+    <div class="icons">
+      
+    </div>
+    <div class="menu">
+      
+        
+            <a href="/" class="nav-menu ">HOME</a>
+          
+        
+            <a href="/archives" class="nav-menu ">ARCHIVE</a>
+          
+        
+            <a href="/categories" class="nav-menu ">CATEGORY</a>
+          
+        
+            <a href="/tags" class="nav-menu ">TAG</a>
+          
+        
+            <a href="/about" class="nav-menu ">ABOUT</a>
+          
+        
+            <a href="/search" class="nav-menu ">SEARCH</a>
+          
+        
+      
+    </div>
+  </div>
+</nav>
+    <div id="main"><section class="article">
+  <h2 class="title">Lua String函数</h2>
+  <p class="sub">
+    3月 12, 2019
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_page_pv"> 阅读量 <span id="busuanzi_value_page_pv"></span></span>
+    
+  </p>
+  <article class="content">
+    <p>local str = “hellolua，helloworld”<br>–返回索引，找不到返回nil<br>print(string.find(str,”hello”))<br>–匹配返回字符串，一般用于判断字符串是否存在<br>print(string.match(str,”hello”))<br>– 字符串截取(str,位置(包含当前位置),长度（负数反向,-1表示截取全部）)<br>print(string.sub(str,5,-1))<br>– 字符串替换(str,被替换字符串，替换字符串)字符串替换生成新字符串，不会改变原字符串<br>s = string.gsub(str,”hellolua”,”lua”)<br>print(s)<br>– 利用字符串替换删除特定字符<br>s1 = string.gsub(str,”hello”,””)<br>print(s1)<br>– 删除字符串<br>str = nil<br>– 字符串拼接<br>str = string.format(“sin(3) = %.4f\n”,math.sin(3))</p>
+
+  </article>
+  <div class="comments"></div>
+  
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script>
+       new Valine({
+            el: '.comments',
+            appId: 'nTjHpFqxjOTtRsli4znbCbUI-gzGzoHsz',
+            appKey: 'QWPj5eE5Oe8oDr2dnQ0ku21R',
+            notify: false,
+            verify: true,
+            pageSize: 10,
+            placeholder: 'just go go' 
+        });
+    </script> 
+  
+  <footer class="f-cf">
+    
+      <a href="/2019/03/12/Lua中的i-o库/" class="link f-fl">⟵Lua中的i/o库</a>
+    
+    
+      <a href="/2019/03/12/Lua-Table增删排序/" class="link f-fr">Lua Table增删排序⟶</a>
+    
+  </footer>
+</section></div>
+    <footer id="footer" class="f-cf">
+  ranyisan@163.com
+  
+  <span class="copyright">All rights reserved @ranyisan</span>
+</footer>
+  </div>
+</body>
+</html>

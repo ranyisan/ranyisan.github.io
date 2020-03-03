@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140414783-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140414783-1');
+  </script>
+
+
+  
+  <meta charset="utf-8">
+  
+  <title>cocos2d-lua Spine骨骼动画与粒子系统 | 然亦伞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Spine骨骼动画2d骨骼动画比逐帧动画有很多优势。图片绑定在骨骼上来实现动画，可以方便地更换角色的装备。且骨骼动画间可以进行混合，例如一个角色既可以开枪射击还可以走跑跳或游泳。通过代码控制骨骼，可以实现跟随鼠标的射击、注视或上坡身体前倾等效果美术人员利用spine编辑器制作骨骼动画，游戏开发人员使用游戏引擎中集成的运行库运行骨骼动画  function MainScene:spineKeleto">
+<meta name="keywords" content="Lua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos2d-lua Spine骨骼动画与粒子系统">
+<meta property="og:url" content="http://ranyisan.tk/2019/03/26/cocos2d-lua-Spine骨骼动画与粒子系统/index.html">
+<meta property="og:site_name" content="然亦伞">
+<meta property="og:description" content="Spine骨骼动画2d骨骼动画比逐帧动画有很多优势。图片绑定在骨骼上来实现动画，可以方便地更换角色的装备。且骨骼动画间可以进行混合，例如一个角色既可以开枪射击还可以走跑跳或游泳。通过代码控制骨骼，可以实现跟随鼠标的射击、注视或上坡身体前倾等效果美术人员利用spine编辑器制作骨骼动画，游戏开发人员使用游戏引擎中集成的运行库运行骨骼动画  function MainScene:spineKeleto">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T21:49:15.414Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cocos2d-lua Spine骨骼动画与粒子系统">
+<meta name="twitter:description" content="Spine骨骼动画2d骨骼动画比逐帧动画有很多优势。图片绑定在骨骼上来实现动画，可以方便地更换角色的装备。且骨骼动画间可以进行混合，例如一个角色既可以开枪射击还可以走跑跳或游泳。通过代码控制骨骼，可以实现跟随鼠标的射击、注视或上坡身体前倾等效果美术人员利用spine编辑器制作骨骼动画，游戏开发人员使用游戏引擎中集成的运行库运行骨骼动画  function MainScene:spineKeleto">
+  
+  <link rel="stylesheet" href="/css/index.css">
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+ --></head>
+</html>
+<body style="
+
+
+  background-color: #eff0f6
+
+
+">
+  <div id="container">
+    <nav id="nav">
+  <header class="header">
+    <a href="/" class="title">然亦伞</a>
+  </header>
+  <div class="ctnWrap">
+    <div class="icons">
+      
+    </div>
+    <div class="menu">
+      
+        
+            <a href="/" class="nav-menu ">HOME</a>
+          
+        
+            <a href="/archives" class="nav-menu ">ARCHIVE</a>
+          
+        
+            <a href="/categories" class="nav-menu ">CATEGORY</a>
+          
+        
+            <a href="/tags" class="nav-menu ">TAG</a>
+          
+        
+            <a href="/about" class="nav-menu ">ABOUT</a>
+          
+        
+            <a href="/search" class="nav-menu ">SEARCH</a>
+          
+        
+      
+    </div>
+  </div>
+</nav>
+    <div id="main"><section class="article">
+  <h2 class="title">cocos2d-lua Spine骨骼动画与粒子系统</h2>
+  <p class="sub">
+    3月 26, 2019
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_page_pv"> 阅读量 <span id="busuanzi_value_page_pv"></span></span>
+    
+  </p>
+  <article class="content">
+    <h2 id="Spine骨骼动画"><a href="#Spine骨骼动画" class="headerlink" title="Spine骨骼动画"></a>Spine骨骼动画</h2><p>2d骨骼动画比逐帧动画有很多优势。图片绑定在骨骼上来实现动画，可以方便地更换角色的装备。且骨骼动画间可以进行混合，例如一个角色既可以开枪射击还可以走跑跳或游泳。通过代码控制骨骼，可以实现跟随鼠标的射击、注视或上坡身体前倾等效果<br>美术人员利用spine编辑器制作骨骼动画，游戏开发人员使用游戏引擎中集成的运行库运行骨骼动画</p>
+<pre><code>
+function MainScene:spineKeleton()
+    -- 从sp.skeletonData来创建骨骼动画
+    cachedData = sp.SkeletonData:create(&quot;HERO1.json&quot;,&quot;HERO1.atlas&quot;)
+    local spineAnimation = sp.SkeletonAnimation:create(cachedData)
+    spineAnimation:pos(display.width/2,display.height/2)
+    :addTo(self)
+    :setAnimation(0,&quot;attack_1&quot;,true)
+    self:performWithDelay(function ()
+        --  骨骼动画播放5s后移除
+        --  不能在状态回调方法registerSpineEventHandler中直接调用移除方法
+        spineAnimation:removeFromParent()
+        cachedData = nil
+    end,5) 
+end
+</code></pre><h2 id="粒子系统"><a href="#粒子系统" class="headerlink" title="粒子系统"></a>粒子系统</h2><p>粒子系统为实现真实自然的随机特效（爆炸，烟花、水流）提供方便。使用粒子编辑器Particle Designer创建粒子plist文件，然后程序中直接通过plist文件来创立粒子系统。</p>
+<pre><code>function  MainScene:particel()
+    -- 读入plist文件
+    local _emitter = cc.ParticleSystemQuad:create(&quot;rainbow.plist&quot;)
+    -- 获得粒子节点列表
+    local batch = cc.ParticleBatchNode:createWithTexture(_emitter:getTexture())
+    batch:addChild(_emitter)
+    self:addChild(batch,10)
+    _emitter:setPosition(display.cx,display.cy-200)
+end
+</code></pre>
+  </article>
+  <div class="comments"></div>
+  
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script>
+       new Valine({
+            el: '.comments',
+            appId: 'nTjHpFqxjOTtRsli4znbCbUI-gzGzoHsz',
+            appKey: 'QWPj5eE5Oe8oDr2dnQ0ku21R',
+            notify: false,
+            verify: true,
+            pageSize: 10,
+            placeholder: 'just go go' 
+        });
+    </script> 
+  
+  <footer class="f-cf">
+    
+      <a href="/2019/03/26/cocos2d-lua-剪裁节点与渲染纹理/" class="link f-fl">⟵cocos2d-lua 剪裁节点与渲染纹理</a>
+    
+    
+      <a href="/2019/03/19/cocos2d-lua数据存储/" class="link f-fr">cocos2d-lua数据存储⟶</a>
+    
+  </footer>
+</section></div>
+    <footer id="footer" class="f-cf">
+  ranyisan@163.com
+  
+  <span class="copyright">All rights reserved @ranyisan</span>
+</footer>
+  </div>
+</body>
+</html>

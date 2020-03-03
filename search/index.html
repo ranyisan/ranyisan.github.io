@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140414783-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140414783-1');
+  </script>
+
+
+  
+  <meta charset="utf-8">
+  
+  <title>search | 然亦伞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="个人博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="search">
+<meta property="og:url" content="http://ranyisan.tk/search/index.html">
+<meta property="og:site_name" content="然亦伞">
+<meta property="og:description" content="个人博客">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-30T23:41:35.429Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="search">
+<meta name="twitter:description" content="个人博客">
+  
+  <link rel="stylesheet" href="/css/index.css">
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+ --></head>
+</html>
+<body style="
+
+
+  background-color: #eff0f6
+
+
+">
+  <div id="container">
+    <nav id="nav">
+  <header class="header">
+    <a href="/" class="title">然亦伞</a>
+  </header>
+  <div class="ctnWrap">
+    <div class="icons">
+      
+    </div>
+    <div class="menu">
+      
+        
+            <a href="/" class="nav-menu ">HOME</a>
+          
+        
+            <a href="/archives" class="nav-menu ">ARCHIVE</a>
+          
+        
+            <a href="/categories" class="nav-menu ">CATEGORY</a>
+          
+        
+            <a href="/tags" class="nav-menu ">TAG</a>
+          
+        
+            <a href="/about" class="nav-menu ">ABOUT</a>
+          
+        
+            <a href="/search" class="nav-menu z-active">SEARCH</a>
+          
+        
+      
+    </div>
+  </div>
+</nav>
+    <div id="main"><section class="article" style="overflow: auto;height:400px;">
+    <form action="#" class="form" style="margin: 15px 15px;max-width: 950px;">
+      <h1>搜索</h1>
+      <input class="form-control" id="search-input" name="contacts" type="text" placeholder="Search by title">
+    </form>
+  
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+<script>
+  var client = algoliasearch('OOQBVXN80F', 'e61028248a116007babc37638e510713',{
+    timeout: 4000,});
+  var index = client.initIndex('rysblog');
+  autocomplete('#search-input', { hint: false}, [
+  {
+    // source: autocomplete.sources.hits(index, { hitsPerPage: 5 }),
+    source: autocomplete.sources.hits(index),
+    displayKey: 'name',
+    templates: {
+      header: function(o, content) {
+        return '<div style="color:#787878;">' + content.nbHits + ' 个结果</div>';
+      },
+      suggestion: function(suggestion) {
+        return '<span>' + '<a class="titLink" href="' + suggestion.permalink + '">' +
+        suggestion._highlightResult.title.value + '</a></span>';
+        // return suggestion._highlightResult.name.value;
+      }
+    }
+  }
+  ]).on('autocomplete:selected', function(event, suggestion, dataset) {
+    console.log(suggestion, dataset);
+  // alert('dataset: ' + dataset + ', ' + suggestion.name);
+});
+</script>
+
+<style>
+  h1{
+    font-size: 28px;
+    line-height: 40px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  #search-input{
+    margin:0px 0px 0px 0px;
+    padding-left: 5px;
+    height:36px;
+    border-radius:4px;
+    border:1px solid #DBDBDB;
+    width:600px;
+    max-width: 800px;
+  }
+  a{
+    cursor:pointer;
+  }
+  a:link{
+    color: #333;
+  }
+  a:hover{
+    opacity:1;
+    color:#f0534e;
+  }
+</style></div>
+    <footer id="footer" class="f-cf">
+  ranyisan@163.com
+  
+  <span class="copyright">All rights reserved @ranyisan</span>
+</footer>
+  </div>
+</body>
+</html>

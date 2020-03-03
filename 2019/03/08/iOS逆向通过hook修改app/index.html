@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140414783-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140414783-1');
+  </script>
+
+
+  
+  <meta charset="utf-8">
+  
+  <title>iOS逆向通过hook修改app | 然亦伞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="抓包获取分发平台的ipa下载路径通过越狱设备抓包获取分发平台的ipa下载路径企业签名的App没有上架到商店,不用砸壳,直接zip解压缩找到可执行文件 判断ipa文件是否已砸壳https://www.jianshu.com/p/03a71b0cb95f 抓包分析应用安装到手机上,抓包分析一波看是否有Api直接可以使用,就不用逆向了,抓包用Charles或者Thor都行。一般接口都带Token请求,没">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS逆向通过hook修改app">
+<meta property="og:url" content="http://ranyisan.tk/2019/03/08/iOS逆向通过hook修改app/index.html">
+<meta property="og:site_name" content="然亦伞">
+<meta property="og:description" content="抓包获取分发平台的ipa下载路径通过越狱设备抓包获取分发平台的ipa下载路径企业签名的App没有上架到商店,不用砸壳,直接zip解压缩找到可执行文件 判断ipa文件是否已砸壳https://www.jianshu.com/p/03a71b0cb95f 抓包分析应用安装到手机上,抓包分析一波看是否有Api直接可以使用,就不用逆向了,抓包用Charles或者Thor都行。一般接口都带Token请求,没">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T21:49:19.694Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS逆向通过hook修改app">
+<meta name="twitter:description" content="抓包获取分发平台的ipa下载路径通过越狱设备抓包获取分发平台的ipa下载路径企业签名的App没有上架到商店,不用砸壳,直接zip解压缩找到可执行文件 判断ipa文件是否已砸壳https://www.jianshu.com/p/03a71b0cb95f 抓包分析应用安装到手机上,抓包分析一波看是否有Api直接可以使用,就不用逆向了,抓包用Charles或者Thor都行。一般接口都带Token请求,没">
+  
+  <link rel="stylesheet" href="/css/index.css">
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+ --></head>
+</html>
+<body style="
+
+
+  background-color: #eff0f6
+
+
+">
+  <div id="container">
+    <nav id="nav">
+  <header class="header">
+    <a href="/" class="title">然亦伞</a>
+  </header>
+  <div class="ctnWrap">
+    <div class="icons">
+      
+    </div>
+    <div class="menu">
+      
+        
+            <a href="/" class="nav-menu ">HOME</a>
+          
+        
+            <a href="/archives" class="nav-menu ">ARCHIVE</a>
+          
+        
+            <a href="/categories" class="nav-menu ">CATEGORY</a>
+          
+        
+            <a href="/tags" class="nav-menu ">TAG</a>
+          
+        
+            <a href="/about" class="nav-menu ">ABOUT</a>
+          
+        
+            <a href="/search" class="nav-menu ">SEARCH</a>
+          
+        
+      
+    </div>
+  </div>
+</nav>
+    <div id="main"><section class="article">
+  <h2 class="title">iOS逆向通过hook修改app</h2>
+  <p class="sub">
+    3月 8, 2019
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_page_pv"> 阅读量 <span id="busuanzi_value_page_pv"></span></span>
+    
+  </p>
+  <article class="content">
+    <h2 id="抓包获取分发平台的ipa下载路径"><a href="#抓包获取分发平台的ipa下载路径" class="headerlink" title="抓包获取分发平台的ipa下载路径"></a>抓包获取分发平台的ipa下载路径</h2><p>通过越狱设备抓包获取分发平台的ipa下载路径<br>企业签名的App没有上架到商店,不用砸壳,直接zip解压缩找到可执行文件</p>
+<h2 id="判断ipa文件是否已砸壳"><a href="#判断ipa文件是否已砸壳" class="headerlink" title="判断ipa文件是否已砸壳"></a>判断ipa文件是否已砸壳</h2><p><a href="https://www.jianshu.com/p/03a71b0cb95f" target="_blank" rel="noopener">https://www.jianshu.com/p/03a71b0cb95f</a></p>
+<h2 id="抓包分析"><a href="#抓包分析" class="headerlink" title="抓包分析"></a>抓包分析</h2><p>应用安装到手机上,抓包分析一波看是否有Api直接可以使用,就不用逆向了,抓包用Charles或者Thor都行。<br>一般接口都带Token请求,没有什么特别的接口可以利用。</p>
+<h2 id="网络扫描和主机检测工具nmap"><a href="#网络扫描和主机检测工具nmap" class="headerlink" title="网络扫描和主机检测工具nmap"></a>网络扫描和主机检测工具nmap</h2><p>nmap分析看有无可利用端口。<br>nmap超详细使用指南:<br><a href="https://crayon-xin.github.io/2018/08/12/nmap%E8%B6%85%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" target="_blank" rel="noopener">https://crayon-xin.github.io/2018/08/12/nmap%E8%B6%85%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</a></p>
+<h2 id="自动化逆向工具MonkeyDev"><a href="#自动化逆向工具MonkeyDev" class="headerlink" title="自动化逆向工具MonkeyDev"></a>自动化逆向工具MonkeyDev</h2><p>Xcode新建一个MonkeyApp工程，直接把砸过壳的ipa扔进TargetApp目录，build运行在手机上。如运行失败，查看报错信息。若发现有些第三方库未安装，通过pod安装上。pod 的时候不要使用use_frameworks！<br>MonkeyDev 已经集成class-dump，并支持Reveal。</p>
+<p>应用成功在手机上运行后，打开Reveal查看app的View结构，通过class-dump获取项目.h头文件，打开Hooper动态分析源代码，定位到需要改写的方法进行hook。再在MonkeyDev里编写Tweek（破解补丁）代码来hook（钩子），Tweak支持CaptainHook、Logos两种语法。MonkeyDev里，logos语法的hook代码在logos文件夹下的.xm文件里编写。</p>
+<p>MonkeyDev安装请直接看官方Wiki</p>
+<p>MonkeyDev自带Reveal与Mac上安装ReVeal版本不一致–新版Reveal没有libReveal.dylib文件:<br><a href="https://www.jianshu.com/p/dcce89a331d1" target="_blank" rel="noopener">https://www.jianshu.com/p/dcce89a331d1</a><br>MokeyDev 的logos tweak工程使用注意事项:<br><a href="https://segmentfault.com/a/1190000011891469" target="_blank" rel="noopener">https://segmentfault.com/a/1190000011891469</a><br>MonkeyDev教程:<br><a href="https://www.jianshu.com/p/28eb7616fd3a" target="_blank" rel="noopener">https://www.jianshu.com/p/28eb7616fd3a</a><br>iOS越狱的Tweak开发:<br><a href="https://www.jianshu.com/p/a5435650e828" target="_blank" rel="noopener">https://www.jianshu.com/p/a5435650e828</a><br>钩子函数Hook及ios下的原理:<br><a href="https://blog.csdn.net/camly/article/details/1752798" target="_blank" rel="noopener">https://blog.csdn.net/camly/article/details/1752798</a><br><a href="https://blog.csdn.net/ZCMUCZX/article/details/80357965" target="_blank" rel="noopener">https://blog.csdn.net/ZCMUCZX/article/details/80357965</a><br><a href="http://shengshui.com/?p=3462" target="_blank" rel="noopener">http://shengshui.com/?p=3462</a></p>
+<h2 id="class-dump的安装和使用"><a href="#class-dump的安装和使用" class="headerlink" title="class-dump的安装和使用"></a>class-dump的安装和使用</h2><p>class-dump从ipa中导出头文件：<br>1、ipa文件，更改为zip格式，然后解压之后得到.app目标文件<br>2、终端输入命令class-dump -H [.app文件的路径] -o [输出文件夹路径]</p>
+<pre><code>class-dump -H /Users/mac/Desktop/Payload/Kt.app -o /Users/mac/Desktop/Payload
+
+</code></pre><p><a href="https://www.jianshu.com/p/e0e05e49ade5" target="_blank" rel="noopener">https://www.jianshu.com/p/e0e05e49ade5</a></p>
+<h2 id="Reveal查看App的View层级"><a href="#Reveal查看App的View层级" class="headerlink" title="Reveal查看App的View层级"></a>Reveal查看App的View层级</h2><p><a href="https://www.jianshu.com/p/060745d5ecc2" target="_blank" rel="noopener">https://www.jianshu.com/p/060745d5ecc2</a><br>iOS更新系统10.13.4关于Reveal4的破解版和最新配置:<br><a href="https://www.jianshu.com/p/27f1951d6004" target="_blank" rel="noopener">https://www.jianshu.com/p/27f1951d6004</a></p>
+<h2 id="反汇编工具Hopper查看项目伪代码"><a href="#反汇编工具Hopper查看项目伪代码" class="headerlink" title="反汇编工具Hopper查看项目伪代码"></a>反汇编工具Hopper查看项目伪代码</h2><p><a href="https://www.hopperapp.com/" target="_blank" rel="noopener">https://www.hopperapp.com/</a></p>
+<h2 id="Logos语法解析"><a href="#Logos语法解析" class="headerlink" title="Logos语法解析"></a>Logos语法解析</h2><p><a href="http://iphonedevwiki.net/index.php/Logos" target="_blank" rel="noopener">http://iphonedevwiki.net/index.php/Logos</a><br><a href="https://blog.csdn.net/AnTianyang/article/details/80530756" target="_blank" rel="noopener">https://blog.csdn.net/AnTianyang/article/details/80530756</a></p>
+<h2 id="hook的方法有block参数应该怎么写"><a href="#hook的方法有block参数应该怎么写" class="headerlink" title="hook的方法有block参数应该怎么写"></a>hook的方法有block参数应该怎么写</h2><p><a href="http://iosre.com/t/hook-block/3184" target="_blank" rel="noopener">http://iosre.com/t/hook-block/3184</a></p>
+<h2 id="逆向直播盒子"><a href="#逆向直播盒子" class="headerlink" title="逆向直播盒子"></a>逆向直播盒子</h2><p><a href="https://www.jianshu.com/p/2a6090d733cd" target="_blank" rel="noopener">https://www.jianshu.com/p/2a6090d733cd</a></p>
+<h2 id="更多链接"><a href="#更多链接" class="headerlink" title="更多链接"></a>更多链接</h2><p>iOSRE:<br><a href="http://iosre.com/" target="_blank" rel="noopener">http://iosre.com/</a><br>块钩正确姿势:<br><a href="https://xiaozhuanlan.com/topic/4537826190" target="_blank" rel="noopener">https://xiaozhuanlan.com/topic/4537826190</a><br>IOS开发之逆向分析:<br><a href="https://yq.aliyun.com/articles/421714" target="_blank" rel="noopener">https://yq.aliyun.com/articles/421714</a><br>iOS 逆向实践记录（非越狱）:<br><a href="https://www.jianshu.com/p/2486b79a8eb9" target="_blank" rel="noopener">https://www.jianshu.com/p/2486b79a8eb9</a><br>iOS 逆向工程资料整理:<br><a href="http://niyaoyao.me/2017/05/09/Learning-Reverse-From-Today-D4/" target="_blank" rel="noopener">http://niyaoyao.me/2017/05/09/Learning-Reverse-From-Today-D4/</a><br>我们一起来还原微信。希望通过 iWeChat 这个项目能过勾勒出微信的设计，使用到的技术手段等:<br><a href="https://github.com/lefex/iWeChat" target="_blank" rel="noopener">https://github.com/lefex/iWeChat</a><br>iOS的逆向分析笔记:<br><a href="https://www.jianshu.com/p/157f56d60a59" target="_blank" rel="noopener">https://www.jianshu.com/p/157f56d60a59</a><br>如何用技術手段“幹掉”優酷、騰訊視訊 App 裡討厭的廣告:<br><a href="https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/592135/" target="_blank" rel="noopener">https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/592135/</a><br>最简单的Hopper Disassembler玩转Mac逆向:<br><a href="https://www.jianshu.com/p/c04ac36c6641" target="_blank" rel="noopener">https://www.jianshu.com/p/c04ac36c6641</a></p>
+<h2 id="iOS逆向之反Hook的基本防护"><a href="#iOS逆向之反Hook的基本防护" class="headerlink" title="iOS逆向之反Hook的基本防护"></a>iOS逆向之反Hook的基本防护</h2><p><a href="https://www.jianshu.com/p/6a9b6ffb0349" target="_blank" rel="noopener">https://www.jianshu.com/p/6a9b6ffb0349</a></p>
+
+  </article>
+  <div class="comments"></div>
+  
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script>
+       new Valine({
+            el: '.comments',
+            appId: 'nTjHpFqxjOTtRsli4znbCbUI-gzGzoHsz',
+            appKey: 'QWPj5eE5Oe8oDr2dnQ0ku21R',
+            notify: false,
+            verify: true,
+            pageSize: 10,
+            placeholder: 'just go go' 
+        });
+    </script> 
+  
+  <footer class="f-cf">
+    
+      <a href="/2019/03/10/Lua用处及进行文件读写操作/" class="link f-fl">⟵Lua用处及进行文件读写操作</a>
+    
+    
+      <a href="/2019/03/08/Mac下iTunes通过Charles抓取旧版iOSApp/" class="link f-fr">Mac下iTunes通过Charles抓取旧版iOSApp⟶</a>
+    
+  </footer>
+</section></div>
+    <footer id="footer" class="f-cf">
+  ranyisan@163.com
+  
+  <span class="copyright">All rights reserved @ranyisan</span>
+</footer>
+  </div>
+</body>
+</html>

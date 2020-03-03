@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[美国工厂 American Factory【2019】【纪录片】【美国】]]></title>
+    <url>%2F2019%2F05%2F20%2F%E7%BE%8E%E5%9B%BD%E5%B7%A5%E5%8E%82%2F</url>
+    <content type="text"><![CDATA[◎译 名 美国工厂◎片 名 American Factory◎年 代 2019◎产 地 美国◎类 别 纪录片◎语 言 英语/汉语普通话◎上映日期 2019-01-25(圣丹斯电影节)/2019-08-21(美国)◎IMDb评分 7.6/10 from 1,349 users◎IMDb链接 https://www.imdb.com/title/tt9351980/◎豆瓣评分 8.5/10 from 15062 users◎豆瓣链接 https://douban.com/subject/30390700/◎片 长 110分钟◎导 演 史蒂文·博格纳尔 Steven Bognar / 朱莉娅·赖克特 Julia Reichert◎主 演 曹德旺 Dewang Cao ◎标 签 纪录片 | 美国 | 文化冲突 | Netflix | 社会 | 2019 | 中国 | 奥巴马 ◎简 介 《美国工厂》是一部 Netflix 原创纪录片，由 Higher Ground Productions 和 Participant Media 出品，荣获奥斯卡金像奖®提名并斩获艾美奖®的朱莉娅·赖克特和史蒂文·博格纳尔（《最后一辆车：通用王国的破产》《A Lion in the House》《正观“红色”》）打造。这部广受好评的电影深入研究了后工业时代的俄亥俄州，一位中国亿万富翁在当地一家废弃的通用汽车工厂中开设新工厂，并雇佣了 2000 名美国蓝领工人。随着高科技中国企业与美国工人阶级产生冲突，最初的希望和乐观遭受了挫折。 ◎获奖情况 第35届圣丹斯电影节 (2019)评审团大奖纪录片(提名) 朱莉娅·赖克特 / 史蒂文·博格纳尔导演奖纪录片 朱莉娅·赖克特 / 史蒂文·博格纳尔]]></content>
+      <categories>
+        <category>Literary</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua 自定义摄像机]]></title>
+    <url>%2F2019%2F03%2F26%2Fcocos2d-lua-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%91%84%E5%83%8F%E6%9C%BA%2F</url>
+    <content type="text"><![CDATA[某些场景中，需要根据游戏进程改变摄像机的位置。如跑酷类游戏，让摄像机跟随主角移动而移动 function MainScene:customCameta() -- 新建层 local layer = display.newLayer() layer:addTo(self) -- 添加背景到层 display.newSprite(&quot;background.png&quot;) :pos(display.cx,display.cy) :addTo(layer) -- 添加主角到层 local startX = 100 local player = display.newSprite(&quot;player.png&quot;) :pos(display.cx,display.cy) :addTo(layer) player:runAction(cc.MoveTo:create(4,cc.p(display.cx,800))) -- 创建正交摄像机(zoomX视平面宽，zoomY是平面高，nearPlane近平面到视点距离，farPlane远平面到视点距离) local camera = cc.Camera:createOrthographic(display.width, display.height, 0, 1) -- 设置摄像机掩码 （影响渲染） camera:setCameraFlag(cc.CameraFlag.USER1) layer:addChild(camera) -- 默认会递归设置所有子节点，如果子节点在这行代码之后加入，子节点需要自行设置摄像机掩码 layer:setCameraMask(2) -- 启动帧事件(每帧刷新时响应，前面设置了player MoveTo动画，所有会不断刷新帧，在帧动画里让摄像机位置随精灵位置变化而变化) self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT,function ( dt ) -- body camera:setPositionY(player:getPositionY()-startX) end) self:scheduleUpdate() end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua 剪裁节点与渲染纹理]]></title>
+    <url>%2F2019%2F03%2F26%2Fcocos2d-lua-%E5%89%AA%E8%A3%81%E8%8A%82%E7%82%B9%E4%B8%8E%E6%B8%B2%E6%9F%93%E7%BA%B9%E7%90%86%2F</url>
+    <content type="text"><![CDATA[剪裁节点根据一个模版，来过滤目标节点的纹理显示区域。 function MainScene:ClippingNode() -- 按钮高光移动特效 display.newColorLayer(cc.c4b(20,9,39,255)):addTo(self) local lightNode = display.newNode() :center() :addTo(self) local button = cc.ui.UIPushButton.new({normal = &quot;wechat.png&quot;},{scale9 = false}) :onButtonClicked(function ( event ) print(&quot;button clicked&quot;) end) :addTo(lightNode) -- cliping for light local stencil = display.newSprite(&quot;wechat.png&quot;) local light = display.newSprite(&quot;light.png&quot;) local clip = cc.ClippingNode:create(stencil) clip:setAlphaThreshold(0.08) -- alpha阀值大于0.08部分才绘制 -- clip:setInverted(ture) --alpha阀值取反 clip:addChild(light) clip:addTo(lightNode) --moving action local size = stencil:getContentSize() local sizeLight = light:getContentSize() light:pos(-size.width/2-sizeLight.width,0) light:runAction(cc.RepeatForever:create( cc.Sequence:create( cc.MoveTo:create(1.5,cc.p(size.width/2 + sizeLight.width,0)), cc.Place:create(cc.p(-size.width/2-sizeLight.width,0)), cc.DelayTime:create(1) ) ) ) end 渲染纹理渲染纹理RenderTextures是一种特殊纹理，由运行时产生，可动态更新修改 function MainScene:RenderTexture() -- 实现一个橡皮擦特效，鼠标点击区域的迷雾会被清除掉，迷雾后面图片完全显示出来 -- background display.newSprite(&quot;HelloWorld.png&quot;) :addTo(self) :center() -- 创建屏幕大小的渲染纹理 self.fbo = cc.RenderTexture:create(display.width,display.height) :center() :addTo(self) -- 将这个纹理使用透明度50%的黑色背景填充 OpenGL颜色表示法取值0～1 self.fbo:clear(0,0,0,0.5) -- eraser NOR add to self -- self.eraser是一个实心区域，透明度为0的黑色背景填充，充当橡皮擦角色不直接显示在屏幕上 self.eraser = display.newSolidCircle(20,{color = cc.c4f(1,1,1,0)}) -- 未引用对象调用retain()来保持其不被引擎的自动回收池回收 self.eraser:retain() -- setBlendFunc是橡皮擦关键，表示渲染混合时，取橡皮擦当前像素来取代与之混合的同位置目标像素，参数表示混合模式 self.eraser:setBlendFunc(gl.ONE,gl.ZERO) --设置容许触摸 self:setTouchEnabled(true) self:addNodeEventListener(cc.NODE_TOUCH_EVENT,function ( event ) -- body if event.name == &quot;began&quot; then return true end if event.name == &quot;moved&quot; then self.eraser:pos(event.x,event.y) -- 手动开启对RenderTexture对象的渲染 self.fbo:begin() -- 将橡皮擦纹理渲染到RenderTexture中 self.eraser:visit() -- 结束渲染 self.fbo:endToLua() end end) end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua Spine骨骼动画与粒子系统]]></title>
+    <url>%2F2019%2F03%2F26%2Fcocos2d-lua-Spine%E9%AA%A8%E9%AA%BC%E5%8A%A8%E7%94%BB%E4%B8%8E%E7%B2%92%E5%AD%90%E7%B3%BB%E7%BB%9F%2F</url>
+    <content type="text"><![CDATA[Spine骨骼动画2d骨骼动画比逐帧动画有很多优势。图片绑定在骨骼上来实现动画，可以方便地更换角色的装备。且骨骼动画间可以进行混合，例如一个角色既可以开枪射击还可以走跑跳或游泳。通过代码控制骨骼，可以实现跟随鼠标的射击、注视或上坡身体前倾等效果美术人员利用spine编辑器制作骨骼动画，游戏开发人员使用游戏引擎中集成的运行库运行骨骼动画 function MainScene:spineKeleton() -- 从sp.skeletonData来创建骨骼动画 cachedData = sp.SkeletonData:create(&quot;HERO1.json&quot;,&quot;HERO1.atlas&quot;) local spineAnimation = sp.SkeletonAnimation:create(cachedData) spineAnimation:pos(display.width/2,display.height/2) :addTo(self) :setAnimation(0,&quot;attack_1&quot;,true) self:performWithDelay(function () -- 骨骼动画播放5s后移除 -- 不能在状态回调方法registerSpineEventHandler中直接调用移除方法 spineAnimation:removeFromParent() cachedData = nil end,5) end 粒子系统粒子系统为实现真实自然的随机特效（爆炸，烟花、水流）提供方便。使用粒子编辑器Particle Designer创建粒子plist文件，然后程序中直接通过plist文件来创立粒子系统。 function MainScene:particel() -- 读入plist文件 local _emitter = cc.ParticleSystemQuad:create(&quot;rainbow.plist&quot;) -- 获得粒子节点列表 local batch = cc.ParticleBatchNode:createWithTexture(_emitter:getTexture()) batch:addChild(_emitter) self:addChild(batch,10) _emitter:setPosition(display.cx,display.cy-200) end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua数据存储]]></title>
+    <url>%2F2019%2F03%2F19%2Fcocos2d-lua%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%2F</url>
+    <content type="text"><![CDATA[UserDefault存储本质是xml文件，以键值对形式存储到硬盘，只支持数字、字符串、布尔值等基本数据类型。 --添加数据 cc.UserDefault:getInstance():setStringForKey(&quot;key&quot;,&quot;value&quot;) --同步内存数据到文件 cc.UserDefault:getInstance():flush() --获取数据 print(cc.UserDefault:getInstance():getStringForKey(&quot;key&quot;)) --value GameState数据存储quick中特有的用户信息存储类,存储的数据类型为lable，有数据校验功能，防止数据被用户篡改。quick框架默认不加载，一般手动在MyApp.lua开头位置加载]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua数据加密]]></title>
+    <url>%2F2019%2F03%2F19%2Fcocos2d-lua%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86%2F</url>
+    <content type="text"><![CDATA[XXTEA对称加密 –游戏中最常用对称加密 Base64编解码 –将传入的数据编码为字符串，这有利于二进制数据的文本化传输，典型的例子是电子名片格式标准vCard，它使用Base64来编码名片的头像信息，从而实现来文本化保存。不接受key作为编码要素。 MD5哈希算法 –哈希值的唯一性用来校验数据的完整性，md5是最常用的哈希算法 AES256对称加密 –cocos2d-lua中只支持iOS、Mac系统,不用 function MainScene:crypto() -- xxTEA 对称加密 local encryptString = crypto.encryptXXTEA(&quot;hello world&quot;,&quot;key&quot;) print (crypto.decryptXXTEA(encryptString,&quot;key&quot;))--&quot;hello world&quot; -- base64加密 local encryptStr = crypto.encodeBase64(&quot;hello world&quot;) print(encryptStr)--aGVsbG8gd29ybGQ= local decryptStr = crypto.decodeBase64(encryptStr) print (decryptStr)--hello world --MD5哈希算法(ture表示输出字符串，false则返回二进制的哈希值) local encryptS = crypto.md5(&quot;hello world&quot;,false) print (encryptS)--5eb63bbbe01eeed093cb22bb8f5acdc3 --计算指定文件的哈希值(需要传入完整的文件路径) -- crypto.md5file(filePath) end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua纹理与精灵帧缓存及精灵换皮肤]]></title>
+    <url>%2F2019%2F03%2F19%2Fcocos2d-lua%E7%B2%BE%E7%81%B5%E6%8D%A2%E7%9A%AE%E8%82%A4%2F</url>
+    <content type="text"><![CDATA[用纹理给精灵换皮肤使用display.newSprite(fileName)创建精灵，引擎会自动把纹理加载到缓冲中，受到内存警告引擎也会自动将未使用的纹理清除。 手动缓存并获取纹理local textureCache = cc.Director:getInstance():getTextureCache() local texture = textureCache:addImage(fileName)addImage第一次调用会加载图片并缓存，然后返回纹理对象，之后调用直接返回纹理对象。 检索纹理local texture = textureCache:getTextuteForKey(fileName) 用纹理给精灵换肤sprite:setTexture(texture) 手动清除纹理缓存cc.Director:getInstance():getTextureCache():removeUnusedTextures()–清除所有未使用的纹理 cc.Director:getInstance():getTextureCache():removeTextureForKey(fileName)–清除特定纹理 用精灵帧给精灵换肤使用精灵帧创建精灵：1、加载精灵表单display.addSpriteFrames(“fruit.plist”,”fruit.png”)2、从精灵纹理缓存中获取某一帧图片来创建精灵display.newSprite(“#fruit01.png”) 从精灵纹理缓存中获取某一帧图片,不存在提示找不到local frame = cc.SpriteFrameCache:getSpriteFrame(“#fruit02.png”) 用精灵帧给精灵换肤sprite:setSpriteFrame(frame) 手动清除精灵帧缓存cc.SpriteFrameCache:getInstance():removeUnusedSpriteFrames()–清除所有未使用的精灵帧 cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile(“fruit.plist”)–清除指定精灵表单创建的精灵帧]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua精灵批处理]]></title>
+    <url>%2F2019%2F03%2F17%2Fcocos2d-lua%E7%B2%BE%E7%81%B5%E6%89%B9%E5%A4%84%E7%90%86%2F</url>
+    <content type="text"><![CDATA[如果一个层中要绘制很多精灵，不进行批处理，会每绘制一个精灵就调用一次OpenGL开销进行渲染，效率低。除了手动批处理，cocos2d-x 3.0版本中也引入了自动批处理，如果没有手动批处理精灵，引擎也会自动进行批处理。但自动批处理的自动算法会消化一定cpu，速度比手动慢，关键是容易被扰乱。 function MainScene:SpriteBatch() -- body math.randomseed(1) display.addSpriteFrames(&quot;stars.plist&quot;,&quot;stars.pvr.ccz&quot;) local batch = display.newBatchNode(&quot;stars.pvr.ccz&quot;) batch:addTo(self) for i=1,100 do -- local sprite = display.newSprite(&quot;#star01.png&quot;) local index = math.round(math.random() * 1000) % 8 + 1 --math.round取四舍五入值 local sprite = display.newSprite(&quot;#star0&quot;..index..&#39;.png&#39;) batch:addChild(sprite) sprite:setPosition(math.random(display.width),math.random(display.height)) end end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua瓦片地图]]></title>
+    <url>%2F2019%2F03%2F17%2Fcocos2d-lua%E7%93%A6%E7%89%87%E5%9C%B0%E5%9B%BE%2F</url>
+    <content type="text"><![CDATA[瓦片地图用Tiled制作。Tiled中有三种图层：Tile layer是瓦片拼接图层Object layer是不可见的，可以在地图上绘制一些点或区域，它们不可见但可在程序中获取并做很多扩展功能Image layer用图片作为层，很少用到 function MainScene:createMap() -- 显示地图 local map = cc.TMXTiledMap:create(&quot;map00.tmx&quot;) self:addChild(map) --获取地图中的Tile图层 local bgLayer = map:getLayer(&quot;background&quot;) --获取图层上的某块瓦片 local tile = bgLayer:getTileAt(cc.p(1,2)) --移除瓦片 bgLayer:removeChild(tile,true) --获取Object Layer对象层及层中所有的对象 local coins = map:getObjectGroup(&quot;coin&quot;):getObjects() --遍历coin对象层，并添加金币 for _,value in pairs(coins) do local coinSprite = display.newSprite(&quot;coin.png&quot;) coinSprite:pos(value.x,value.y) coinSprite:addTo(self) end end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua 滚动框、列表、分页视图]]></title>
+    <url>%2F2019%2F03%2F17%2Fcocos2d-lua-%E6%BB%9A%E5%8A%A8%E6%A1%86%E3%80%81%E5%88%97%E8%A1%A8%E3%80%81%E5%88%86%E9%A1%B5%E8%A7%86%E5%9B%BE%2F</url>
+    <content type="text"><![CDATA[dump函数，导出一个table类型的信息到log界面 -- 导出所选页面的所有响应了的响应事件的evnet dump(event,&quot;MainScene - event:&quot;) UIScrollViewuiscrollView内部只能添加一个滚动节点，内部节点相对与滚动框的父视图锚点固定为（0，0）不可修改 function MainScene:creatScrollView() -- body local sprite = display.newSprite(&quot;scroll/cloud.png&quot;) sprite:pos(display.cx,display.cy) cc.ui.UIScrollView.new({ direction = cc.ui.UIScrollView.DIRECTION_BOTH, viewRect = cc.rect(0,0,320,480),--设置显示区域 scrollbarImgH = &quot;scroll/barH.png&quot;, scrollbarImgV = &quot;scroll/bar.png&quot;, bgColor = cc.c4b(255,255,255,255), }) :addScrollNode(sprite)--只能添加一个滚动节点 :onScroll(function ( event ) --滚动监听事件 -- body print(&quot;ScrollListener:&quot;..event.name..&quot; y=&quot;..event.y) end) :pos(display.cx-160,display.cy-240) :setBounceable(false) -- 回弹效果默认开启 :addTo(self) end UIListViewuilistView是uiscrollView的扩展 function MainScene:creatListView() -- body local function touchListener(event) -- 列表点击事件 local listView = event.listView if &quot;clicked&quot; == event.name then if 3 == event.itemPos then --点击的是第几个item listView:removeItem(event.item,true) --移除被点击的item end end end self.lv = cc.ui.UIListView.new({ -- bgColor = cc.c4b(200,200,200,200), bg = &quot;list/sunset.png&quot;, bgScale9 = true, viewRect = cc.rect(40,80,500,400), direction = cc.ui.UIScrollView.DIRECTION_VERTICAL, scrollbarImgV = &quot;list/bar.bg&quot;, }) :onTouch(touchListener)--添加item点击监听 :addTo(self) --添加item for i=1,15 do local item = self.lv:newItem() item:setItemSize(400,40) local content if 2==i then content = cc.ui.UIPushButton.new(&quot;list/GreenButton.png&quot;,{scale9=true}) :setButtonSize(300,40) :setButtonLabel(cc.ui.UILabel.new({ text = &quot;点击改变大小的item--&quot;..i, size = 16, color = display.COLOR_BLUE, })) :onButtonPressed(function ( event ) --按钮按下监听 event.target:getButtonLabel():setColor(display.COLOR_RED) end) :onButtonRelease(function ( event ) --按钮按下释放监听 event.target:getButtonLabel():setColor(display.COLOR_BLUE) end) :onButtonClicked(function ( event ) -- 按钮点击监听,改变item大小 if not self.lv:isItemInViewRect(item) then --判断item是否在显示范围 print (&quot;item not in view rect&quot;) return end --如果item在显示范围，则进行后面改变大小操作 print (&quot;item button clicked&quot;) local _,h = item:getItemSize() if 40 == h then item:setItemSize(400,80) else item:setItemSize(400,40) end end) elseif 3 == i then content = cc.ui.UILabel.new({ text = &quot;点击删除item--&quot;..i, size = 20, align = cc.ui.TEXT_ALIGN_CENTER, color = display.COLOR_BLACK, }) elseif 4 == i then content = cc.ui.UILabel.new({ text = &quot;有背景图item--&quot;..i, size = 20, align = cc.ui.TEXT_ALIGN_CENTER, color = display.COLOR_BLACK, }) item:setBg(&quot;list/YellowBlock.png&quot;) else content = cc.ui.UILabel.new({ text = &quot;item--&quot;..i, size = 20, align = cc.ui.TEXT_ALIGN_CENTER, color = display.COLOR_BLACK, }) end item:addContent(content) self.lv:addItem(item) end --刷新listView self.lv:reload() end UIPageViewuipageView类似ios的collectionView与pageView的结合。每页显示一个由纵向和横向的一组item组成的矩阵。column：每一页的列数默认1row：每一页的行数默认1columnSpace: 列间隙rowSpace: 行间隙viewRect():显示区域默认全屏bCirc: 页面是否循环 function MainScene:createPageView() local function touchListener( event ) -- item点击事件.dump函数，导出一个table对象的信息到log界面 dump(event,&quot;MainScene - event:&quot;) end --创建pageView self.pv = cc.ui.UIPageView.new({ viewRect = cc.rect(80,240,480,480), column = 3,row = 3, padding = {left = 20,right = 20,top = 20,bottom = 20}, columnSpace = 10,rowSpace = 10,bCirc = true, }) :onTouch(touchListener) :addTo(self) --添加item for i = 1,18 do local item = self.pv:newItem() local content = cc.LayerColor:create( cc.c4b(math.random(250),math.random(250),math.random(250),250)) content:setContentSize(240,240) content:setTouchEnabled(false) item:addChild(content) self.pv:addItem(item) end self.pv:reload() end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua UI控件之输入框、进度条、滑动条]]></title>
+    <url>%2F2019%2F03%2F17%2Fcocos2d-lua-UI%E6%8E%A7%E4%BB%B6%E4%B9%8B%E8%BE%93%E5%85%A5%E6%A1%86%E3%80%81%E8%BF%9B%E5%BA%A6%E6%9D%A1%E3%80%81%E6%BB%91%E5%8A%A8%E6%9D%A1%2F</url>
+    <content type="text"><![CDATA[输入控件function MainScene:createInput() -- body local function onEdit (event,editbox) if event == &quot;begin&quot; then print (&quot;开始输入&quot;) elseif event == &quot;changed&quot; then print (&quot;内容变化&quot;) print (editbox:getText()) elseif event == &quot;ended&quot; then print (&quot;输入结束&quot;) elseif event == &quot;return&quot; then print (&quot;输入返回&quot;) end end local editbox = cc.ui.UIInput.new({ image = &quot;editbox.png&quot;, listener = onEdit, size = cc.size(200,40), x = display.width/2, y = display.height/2, }) self:addChild(editbox) editbox:setInputFlag(0)--密文显示 editbox:setPlaceHolder(&quot;输入文本&quot;) end 进度条控件进度条控件只创建了进度条，并没有匹配背景，进度条背景需要用sprite自行创建 function MainScene:creatLoadingBar() -- body local loadBar = cc.ui.UILoadingBar.new({ scale9 = true, capInsets = cc.rect(0,0,10,10), image = &quot;loading.png&quot;, viewRect = cc.rect(0,0,200,32), percent = 100, direction = DIRECTION_LEFT_TO_RIGHT }) :addTo(self) end 滑动条控件function MainScene:creatSlider() -- body local images = { bar = &quot;slider/SliderBar.png&quot;, button = &quot;slider/SliderButton.png&quot;, } local barHeight = 40 local barWidth = 400 local valueLabel = cc.ui.UILabel.new({ UILabelType = 2, text = &quot;&quot;, size = 14, color = display.COLOR_WHITE, }) :addTo(self) :align(display.LEFT_CENTER,display.left+barWidth+60,display.top-60) cc.ui.UISlider.new(display.LEFT_TO_RIGHT,images,{scale9 = true,min = 0,max = 100}) :onSliderValueChanged(function (event) -- 滑动条值变化事件监听 valueLabel:setString(string.format(&quot;value = %0.2f&quot;,event.value)) print (event.name) end) :onSliderStateChanged(function (event) -- 监测状态变化，可用UISlider:isButtonEnabled()获取当前状态 print (event.name) end) :onSliderPressed(function (event) -- 滑动按钮被点击事件监听 print (event.name) end) :onSliderRelease(function ( event ) -- 滑动按钮被释放事件监听 print(event.name) end) :setSliderSize(barWidth,barHeight) --修改滑动条大小，scale9=true才有效 :setSliderValue(75)--设置滑动块位置值，要在设置的min-max范围内 :align(display.LEFT_BOTTOM,display.left+40,display.top-80) :addTo(self) cc.ui.UILabel.new({text = &quot;Left to right&quot;,size = 14,color = display.COLOR_WHITE}) :align(display.LEFT_CENTER,display.left+40,display.top-30) :addTo(self) end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua节点帧事件]]></title>
+    <url>%2F2019%2F03%2F14%2Fcocos2d-lua%E8%8A%82%E7%82%B9%E5%B8%A7%E4%BA%8B%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[在cocos2d-x中，c++可以通过重载update函数，在每帧刷新时执行自己想要的一些操作。帧事件，即为每帧刷新时都会执行的事件。调用的是节点帧调度器。 在节点注册了节点事件（NODE_ENTER_FRAME_EVNET类型）监听后，还须调用scheduleUpdate()方法，帧事件才会触发。这与NODE_EVENT类型注册即触发不同。帧事件的回调函数参数只有一个dt，表示时间间隔。 帧事件在游戏中常用来更新数据，如射击游戏中，就需要通过帧事件来更新子弹坐标等参数 function MainScene:nodeScheduleUpdate( ... ) -- 创建节点 local node = display.newNode() self:addChild(node) -- 为节点注册监听事件 node:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT,function ( dt ) -- body print(dt) end) -- 启动帧事件 node:scheduleUpdate() -- 0.5s后，停止帧事件 node:performWithDelay(function () -- 禁用帧事件 node:unscheduleUpdate() print(&quot;Stop&quot;) -- 再等0.5s重启帧事件 node:performWithDelay(function () -- 启动帧事件 node:scheduleUpdate() end,0.5) end,0.5) --[[ 运行结果： 屏幕上不断输出上一帧与下一帧间的事件间隔（通常为1/60s）,并在第一个0.5s时短暂停顿一下。 ]] end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua节点事件]]></title>
+    <url>%2F2019%2F03%2F14%2Fcocos2d-lua%E8%8A%82%E7%82%B9%E4%BA%8B%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[节点事件在Node进入和退出场景时触发。也叫场景事件，它能被场景及其所有子节点监听.节点事件注册即触发，与帧事件需要调用scheduleUpdate()才启动不同。通常enter：在里面进行场景初始化工作。exit：如果转场使用了特效，在里面停止场景中的动画，避免切换场景的特效导致帧率下降。cleanup:进行清理工作。 node:addNodeEventListener(cc.NODE_EVENT,function (event) --[[ event参数只有name属性,值如下: enter:场景加载 exit:场景退出 enterTransitionFinish:转场特效结束 exitTransitionStart:退出特效开始 cleanup:场景被完全清理并从内存删除 ]] print (event.name) end) 创建测试场景并进行节点监听 function MainScene:ctor() self:createTestSceneForNodeEvent() end function MainScene:createTestSceneForNodeEvent() -- 创建场景并为场景添加节点事件 local function creatTestScene(name) -- body local scene = display.newScene(name) scene:addNodeEventListener(cc.NODE_EVENT,function ( event ) -- 输出当前场景及当前场景的状态（enter、exit、enterTransitionFinish、exitTransitionStart、cleanup） printf(&quot;node in scene [%s] NODE_ENENT:%s&quot;,name,event.name) end) return scene end --等待1.0秒创建第一个测试场景 self:performWithDelay(function () -- body local scene1 = creatTestScene(&quot;scene1&quot;) display.replaceScene(scene1) --等待1.0秒创建第二个测试场景 scene1:performWithDelay(function () print(&#39;------------&#39;) local scene2 = creatTestScene(&quot;scene2&quot;) -- display.replaceScene(scene2) display.replaceScene(scene2,&quot;random&quot;,1.0) end,1.0) end,1.0) end --[[ 控制台输出： [LUA-print] node in scene [scene1] NODE_ENENT:enter [LUA-print] node in scene [scene1] NODE_ENENT:enterTransitionFinish [LUA-print] ------------ [LUA-print] node in scene [scene1] NODE_ENENT:exitTransitionStart [LUA-print] node in scene [scene1] NODE_ENENT:exit [LUA-print] node in scene [scene1] NODE_ENENT:cleanup [LUA-print] node in scene [scene2] NODE_ENENT:enter [LUA-print] node in scene [scene2] NODE_ENENT:enterTransitionFinish ]] --[[ 如果为scene2的跳转添加转场动画，择控制台输出： [LUA-print] node in scene [scene1] NODE_ENENT:enter [LUA-print] node in scene [scene1] NODE_ENENT:enterTransitionFinish [LUA-print] ------------ [LUA-print] node in scene [scene1] NODE_ENENT:exitTransitionStart [LUA-print] node in scene [scene2] NODE_ENENT:enter [LUA-print] node in scene [scene1] NODE_ENENT:exit [LUA-print] node in scene [scene2] NODE_ENENT:enterTransitionFinish [LUA-print] node in scene [scene1] NODE_ENENT:cleanup ]]]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos-2d lua全局调度器与节点调度器]]></title>
+    <url>%2F2019%2F03%2F14%2Fcocos-2d-lua%E5%85%A8%E5%B1%80%E8%B0%83%E5%BA%A6%E5%99%A8%E4%B8%8E%E8%8A%82%E7%82%B9%E8%B0%83%E5%BA%A6%E5%99%A8%2F</url>
+    <content type="text"><![CDATA[全局调度器调度器用于周期性处理事务，全局调度器全局保活。需要手动加载并手动销毁。（延迟调度器会在调用后自动销毁，但不完全可靠）使用场景：在线游戏的网络心跳包，全局变量的刷新。自定义调度器可以指定调用回调函数的时间。而延时调度器可以指定调用时间，且仅执行一次回调函数。全局调度器及节点帧调度器的回调函数的参数只有一个dt，表示时间间隔的。帧调度器监听每一帧的刷新，即帧刷新时调用回调函数 function MainScene.scheduleGlobal() local scheduler = require(cc.PACKAGE_NAME..&quot;.scheduler&quot;) local function onInterval(dt) print (&quot;update&quot;) end --全局帧调度器 scheduler.scheduleUpdateGlobal(onInterval) --全局自定义调度器 scheduler.scheduleGloabl(onInterval,0.5) --全局延时调度器(指定时间后只会执行一次回调函数) scheduler.performWithDelayGlobal(onInterval,2) --scheduler.unscheduleGloabl() end 节点调度器节点调度器是节点基础类Node提供的方法，生命周期跟随Node，Node销毁时会自动销毁其名下的所有节点调度器。不需要手动销毁。 function MainScene.schedulerNode() -- 节点自定义调度器 local action = node:schedule(function () -- body print(&quot;scheduler&quot;) end,1.0) -- 节点延时调度器(指定时间后执行一次回调函数) node:performWithDelay(function () -- body print (&quot;performWithDelay&quot;) end,1.0) end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua 序列帧动画]]></title>
+    <url>%2F2019%2F03%2F14%2Fcocos2d-lua-%E5%BA%8F%E5%88%97%E5%B8%A7%E5%8A%A8%E7%94%BB%2F</url>
+    <content type="text"><![CDATA[序列帧动画创建步骤1、从精灵表单批量导入精灵帧到引擎的帧缓冲精灵表单：由一张存储一组精灵纹理的大图（纹理文件）和一个对应的plist描述文件组成。可由texturepacker软件制作。 display.addSpriteFrames(&quot;stars.plist&quot;,&quot;stars.pvr.ccz&quot;) 2、创建序列帧数组引擎的帧缓冲中的精灵帧图片可以用来做帧动画，也可以用来设置给某个静态精灵（引用帧缓冲中的图片，图片名称前要加#，以区别于从res资源中获取图片）。 local frames = display.newFrames(&quot;star%02d.png&quot;,1,9) 3、利用序列帧数组创建帧动画对象AnimationAnimation 是描述帧动画的对象 local animation = display.newAnimation(frames,0.2) 4、通过Animation创建动作对象Animate1、Animation对象不能直接被节点runAction播放，因为它不是动作对象Action，所以需要创建一个Animate动作对象来赋予节点2、如果只需要简单地让一个精灵播放动画，可直接使用cocos2d-lua封装的方法，不比繁琐地创建ActionSprite:playAnimationOnce(animation,removeWhenFinished,onComplete,delay) --创建动作Action local animate = cc.Animate:create(animation) 5、创建精灵并运行动作 local sprite = display.newSprite(&quot;#star01.png&quot;) :center() :addTo(self.backgroundLayer) :runAction(animate) 6、帧动画缓冲每次创建帧动画比较繁琐，所以我们可以将常用的Animation缓存起来，后面每次使用，只需从引擎的缓冲中拿。 -- 帧动画缓存的代码 function MainScene:animationCacheStar() -- body self.backgroundLayer = display.newColorLayer(cc.c3b(255,200,2)) :addTo(self) --将帧序列加入引擎缓冲 display.addSpriteFrames(&quot;stars.plist&quot;,&quot;stars.pvr.ccz&quot;) --创建精灵 local sprite = display.newSprite(&quot;#001.png&quot;) :center() :addTo(self.backgroundLayer) --创建帧动画 local frames = display.newFrames(&quot;%03d.png&quot;,1,4) local animation = display.newAnimation(frames,0.2) -- 缓存帧动画 display.setAnimationCache(&quot;stars&quot;,animation) --从cache中获取缓存的帧动画 animation = display.getAnimationCache(&quot;stars&quot;) --清除帧动画缓存 display.removeAnimationCache(&quot;stars&quot;) --为精灵添加动画帧动作 sprite:playAnimationOnce(animation,false,function () -- body print(&quot;complete&quot;) end,1) end 帧动画Animation不缓存的完整代码 local MainScene = class(&quot;MainScene&quot;, function() return display.newScene(&quot;MainScene&quot;) end) function MainScene:ctor() self:animationStar() end function MainScene:onEnter() end function MainScene:onExit() end function MainScene:animationStar() -- body self.backgroundLayer = display.newColorLayer(cc.c4b(255,0,0,255)) self.backgroundLayer:addTo(self) --引入精灵表单（纹理文件+plist描述文件） display.addSpriteFrames(&quot;stars.plist&quot;,&quot;stars.pvr.ccz&quot;) -- local frames = display.newFrames(&quot;%03d.png&quot;,1,4) local animation = display.newAnimation(frames,0.2) local animate = cc.Animate:create(animation) local sprite = display.newSprite(&quot;#001.png&quot;) :center() :addTo(self.backgroundLayer) :runAction(animate) end return MainScene]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua ActionEase缓冲]]></title>
+    <url>%2F2019%2F03%2F13%2Fcocos2d-lua-ActionEase%E7%BC%93%E5%86%B2%2F</url>
+    <content type="text"><![CDATA[缓冲包装器用来包装动作，为动作提供缓冲 cc.EaseSineIn:create(cc.MoveBy:create(4,cc.p(200,200))) 缓冲ActionEase （In Out InOut）指数缓冲EaseExposine正弦缓冲EaseSine弹性缓冲EaseElastic跳跃缓冲EaseBounce回震缓冲EaseBack]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-luaLayer跟随（Follow）Sprite]]></title>
+    <url>%2F2019%2F03%2F13%2Fcocos2d-luaLayer%E8%B7%9F%E9%9A%8F%EF%BC%88Follow%EF%BC%89Sprite%2F</url>
+    <content type="text"><![CDATA[Follow经常用来设置Layer跟随Sprite，实现摄像头跟随效果 local MainScene = class(&quot;MainScene&quot;, function() return display.newScene(&quot;MainScene&quot;) end) function MainScene:ctor() self:follow() end function MainScene:follow() -- body self.backgroundLayer = display.newColorLayer(cc.c4b(255,0,0,255)) self.backgroundLayer:addTo(self) local sprite1 = display.newSprite(&quot;01.png&quot;) sprite1:center() local move_right = cc.MoveBy:create(1.5,cc.p(display.width/2,0)) local move_left = cc.MoveBy:create(3,cc.p(-display.width,0)) local seq = cc.Sequence:create(move_right,move_left,move_right) local req = cc.RepeatForever:create(seq) sprite1:runAction(req) sprite1:addTo(self.backgroundLayer) self.backgroundLayer:runAction(cc.Follow:create(sprite1)) end function MainScene:onEnter() end function MainScene:onExit() end return MainScene]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-lua场景转换]]></title>
+    <url>%2F2019%2F03%2F13%2Fcocos2d-lua%E5%9C%BA%E6%99%AF%E8%BD%AC%E6%8D%A2%2F</url>
+    <content type="text"><![CDATA[MainScene.lua文件local MainScene = class(&quot;MainScene&quot;, function() return display.newScene(&quot;MainScene&quot;) end) function MainScene:ctor() self:test2() end function MainScene:onEnter() end function MainScene:onExit() end function MainScene:test2() -- body --创建初始界面 local layer = cc.LayerColor:create(cc.c3b(255,0,0)) layer:setContentSize(display.width,display.height) self:addChild(layer) --创建文本 cc.ui.UILabel.new({ UILabelType = 2, text = &quot;干巴爹&quot;, color = cc.c4b(255,255,0,255), font = &quot;Arial&quot;, size = 64 }) :align(display.CENTER,display.cx,display.cy) :addTo(layer) --创建点击跳转按钮 cc.ui.UIPushButton.new({normal = &quot;button/Button01.png&quot;,pressed = &quot;button/Button01Pressed.png&quot;,}) :setButtonLabel(&quot;normal&quot;,cc.ui.UILabel.new({ UILabelType = 2, color = display.COLOR_WHITE, size = 48, text = &quot;页面跳转&quot; })) :setButtonLabel(&quot;pressed&quot;,cc.ui.UILabel.new({ text = &quot;页面跳转&quot;, size = 48, color = cc.c3b(220,240,40,255), UILabelType = 2 })) :onButtonClicked(function ( event ) -- body local secondScene = import(&quot;app.scenes.SecondScene&quot;):new() display.replaceScene(secondScene,&quot;fade&quot;,0.5,cc.c3b(255,0,0)) end) :setPosition(display.width*0.2,display.height *0.5) :addTo(layer) end return MainScene SecondScene.lua文件local SecondScene = class(&quot;SecondScene&quot;,function () -- body return display.newScene(&quot;SecondScene&quot;) end) function SecondScene:ctor() -- body local label = cc.ui.UILabel.new({ UILabelType = 2, text = &quot;Second Scene&quot;, size = 64, color = cc.c3b(39,89,8), align = cc.TEXT_ALIGNMENT_CENTER }) label:setAnchorPoint(0.5,0.5) label:setPosition(display.width*0.5,display.height*0.5) self:addChild(label) end function SecondScene:onEnter() -- body end function SecondScene:onExit() -- body end return SecondScene]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[cocos2d-Lua添加按钮与文字]]></title>
+    <url>%2F2019%2F03%2F13%2Fcocos2d-Lua%E6%B7%BB%E5%8A%A0%E6%8C%89%E9%92%AE%E4%B8%8E%E6%96%87%E5%AD%97%2F</url>
+    <content type="text"><![CDATA[添加点击按钮UIPushButtonscale9 参数为true，图片随按钮尺寸缩放一般scale9设置为false，且不要设置按钮尺寸，这样按钮尺寸会随图片大小 function MainScene:ctor() -- 添加按钮 local images = { normal = &quot;button/Button01.png&quot;, pressed = &quot;button/Button01Pressed.png&quot;, disabled = &quot;button/Button01Disabled.png&quot;, } cc.ui.UIPushButton.new(images,{scale9 = true}) :setButtonSize(240,60) :setButtonLabel(&quot;normal&quot;,cc.ui.UILabel.new({ UILabelType = 2, text = &quot;Normal&quot;, size = 19 })) :setButtonLabel(&quot;pressed&quot;,cc.ui.UILabel.new({ UILabelType = 2, text = &quot;Pressed&quot;, size = 19, color = cc.c3b(255,64,64) })) :setButtonLabel(&quot;disabled&quot;,cc.ui.UILabel.new({ UILabelType = 2, text = &quot;Disabled&quot;, size = 19, color = cc.c3b(0,0,0) })) :onButtonClicked(function ( event ) -- body print (&quot;点击了&quot;) end) :align(display.LEFT_CENTER,display.left+80,display.top-80) :addTo(self) end 添加开关按钮UICheckBoxButtonlocal checkBoxImg = { on = &quot;button/CheckBoxButtonOn.png&quot;, on_pressed = &quot;button/CheckBoxButtonOnPressed.png&quot;, on_disabled = &quot;button/CheckBoxButtonOnDisabled.png&quot;, off = &quot;button/CheckBoxButtonOff.png&quot;, off_pressed = &quot;button/CheckBoxButtonOffPressed.png&quot;, off_disabled = &quot;button/CheckBoxButtonOffDisabled.png&quot;, } --添加开关按钮状态变化响应函数 local function updateCheckBoxButtonLabel(checkBox) -- body local state = &quot;&quot; if checkBox:isButtonSelected() then state = &quot;on&quot; else state = &quot;off&quot; end if not checkBox:isButtonEnabled() then state = state..&quot;(disabled)&quot; end checkBox:setButtonLabelString(string.format(&quot;state is %s&quot;,state)) end --创建按钮 local checkBoxButton = cc.ui.UICheckBoxButton.new(checkBoxImg) :setButtonLabel(cc.ui.UILabel.new({ text = &quot;&quot;, size = 22, color = cc.c3b(255,96,255), })) :setButtonLabelOffset(20,0) --设置文本显示的偏移位置 :setButtonLabelAlignment(display.CENTER) --设置文本对齐方式 :onButtonStateChanged(function ( event ) -- body updateCheckBoxButtonLabel(event.target) end) :setButtonEnabled(true) --设置按钮是否可响应 :align(display.LEFT_CENTER,display.left+80,display.top-200) :addTo(layer1) updateCheckBoxButtonLabel(checkBoxButton) 添加单选菜单选择按钮UICheckBoxButtonGrouplocal menuImgs = { off = &quot;button/RadioButtonOff.png&quot;, on = &quot;button/RadioButtonOn.png&quot; } --创建checkBoxButton组件 local group = cc.ui.UICheckBoxButtonGroup.new(display.TOP_TO_BOTTOM) :addButton( cc.ui.UICheckBoxButton.new(menuImgs) :setButtonLabel(cc.ui.UILabel.new({ text = &quot;option 1&quot;, color = display.COLOR_WHITE })) :setButtonLabelOffset(60,0) :align(display.LEFT_CENTER) ) :addButton( cc.ui.UICheckBoxButton.new(menuImgs) :setButtonLabel(cc.ui.UILabel.new({ text = &quot;option 2&quot;, color = display.COLOR_WHITE, })) :setButtonLabelOffset(60,0) :align(display.LEFT_CENTER) ) :addButton( cc.ui.UICheckBoxButton.new(menuImgs) :setButtonLabel(cc.ui.UILabel.new({ text = &quot;option 3 disabled&quot;, color = display.COLOR_WHITE })) :setButtonLabelOffset(60,0) :setButtonEnabled(false) :align(display.LEFT_CENTER) ) :setButtonsLayoutMargin(10,10,10,10)--设置margin边缘值 :onButtonSelectChanged(function ( event ) -- body printf(&quot;Option %d selected, Option %d unselected&quot;,event.selected,event.last) end) :align(display.LEFT_CENTER,display.left+80,display.top-400)--设置瞄点与位置 :addTo(layer1) 添加文字UILabelcc.ui.UILabel.new({UILabelType = 2, text = &quot;你好呀然亦伞&quot;, size = 64,font = &quot;Arial&quot;,color = cc.c3b(255,0,0)}) :align(display.CENTER,display.cx,display.cy) :addTo(layer1)]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Lua中的i/o库]]></title>
+    <url>%2F2019%2F03%2F12%2FLua%E4%B8%AD%E7%9A%84i-o%E5%BA%93%2F</url>
+    <content type="text"><![CDATA[– write输出是print简化版输出，不会自动换行,不可以..等复杂操作io.write(‘ok\n’)io.write(string.format(“sin(3) = %.4f\n”,math.sin(3))) – read从当前输入中读取 all line *number –快速逐行读（按块读）local file = assert(io.open(“aa.lua”,’r’))local bufferSize = 2^13 –每行8kb读（最大8kb缓存值）file:read(bufferSize,”*line”)file:close() – 读取文件生成io流进行操作function write_st( msg ) – body local file = assert(io.open(“aa.lua”,’a’)) local tmp = io.input() file:input(“newinput.lua”) file:write(msg) io.input():close() io.input(tmp)end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Lua String函数]]></title>
+    <url>%2F2019%2F03%2F12%2FLua-String%E5%87%BD%E6%95%B0%2F</url>
+    <content type="text"><![CDATA[local str = “hellolua，helloworld”–返回索引，找不到返回nilprint(string.find(str,”hello”))–匹配返回字符串，一般用于判断字符串是否存在print(string.match(str,”hello”))– 字符串截取(str,位置(包含当前位置),长度（负数反向,-1表示截取全部）)print(string.sub(str,5,-1))– 字符串替换(str,被替换字符串，替换字符串)字符串替换生成新字符串，不会改变原字符串s = string.gsub(str,”hellolua”,”lua”)print(s)– 利用字符串替换删除特定字符s1 = string.gsub(str,”hello”,””)print(s1)– 删除字符串str = nil– 字符串拼接str = string.format(“sin(3) = %.4f\n”,math.sin(3))]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Lua Table增删排序]]></title>
+    <url>%2F2019%2F03%2F12%2FLua-Table%E5%A2%9E%E5%88%A0%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[谨慎使用 table[index]=nil 删除某索引下的值，原table其他隐藏索引编号不会发生改变！且这种方法会导致索引产生空缺不连续，也会影响ipairs方法的遍历，pairs方法不受影响 t = { 1, 2, 3 } --插入函数(table,位置（可选），值) table.insert(t,1,10) table.insert(t,&#39;r&#39;) --删除函数(table,位置（可选)） table.remove(t,2) table.remove(t) -- 不写位置默认删除最末一位 t[2]=nil -- 删除该索引下的值，但是！原table其他隐藏索引不会改变！ --排序(table,排序规则(可选)，默认正序) -- 正序排序 table.sort(t) --倒序排序 local function my_sort(x,y) -- body if x &gt; y then return true else return false end end table.sort(t,my_sort) for k,v in pairs(t) do print(k,v) end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Lua Math函数]]></title>
+    <url>%2F2019%2F03%2F12%2FLua-Math%E5%87%BD%E6%95%B0%2F</url>
+    <content type="text"><![CDATA[os.time()获取系统时间戳print(os.time()) 三角形转角转弧度求sin–调用math.sin函数print(math.sin(30))–将角度转换成弧度math.deg(x)–将弧度转换成角度math.rad(x) 取整函数local num = 1.34–向上取整print(math.ceil(num))–向下取整print(math.floor(num)) 最小最大值– 最小最大值，可以多个数值对比print(math.max(10,20,44,30.5))print (math.min(…)) 随机数伪随机数函数math.random() --默认从0-1之间 math.random() --0-6之间 print(math.random(6)) --4-6之间 print(math.random(4,6)) 设置随机数的种子 --用于在同一时间相同随机范围的随机数的序列化 --随机种子的设定（os.time()为随机种子） --每次启动的时候调用，给随机数函数设定随机种子，以使后面调用伪随机函数math.random()使，获取到更真的随机数 math.randomseed(os.time()) https://blog.csdn.net/zxcvbnm0014/article/details/42705937]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Lua Table私密性与单一方法]]></title>
+    <url>%2F2019%2F03%2F12%2FLua%E7%A7%81%E5%AF%86%E6%80%A7%2F</url>
+    <content type="text"><![CDATA[Table私密性通过封装方法调用，不容许直接调用table属性 function newAccount( initlizedBanlance) -- body local self = {balance = initlizedBanlance} local show = function ( v ) -- body self.balance = self.balance - v end local getBanlance = function ( ) -- body return self.balance end return { show = show, getBanlance = getBanlance } end acc = newAccount(200) print(acc.getBanlance) -- function: 0x7fec19c06d00 acc.show(150) -- 50 print(acc.getBanlance()) table单一方法当不想创建对象时，通过重写set、get使用单一方法，非传统方法创建对象 -- 单一方法 function newObject(value) -- body return function (action,v) -- body if action == &quot;get&quot; then return value elseif action == &quot;set&quot; then value = v else error(&quot;invalid action&quot;) end end end d = newObject(0) print(d(&quot;get&quot;)) -- 0 d(&quot;set&quot;,10) print(d(&quot;get&quot;)) -- 10]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Lua中Table的单继承与多继承]]></title>
+    <url>%2F2019%2F03%2F12%2FLua%E4%B8%ADTable%E7%9A%84%E5%8D%95%E7%BB%A7%E6%89%BF%E4%B8%8E%E5%A4%9A%E7%BB%A7%E6%89%BF%2F</url>
+    <content type="text"><![CDATA[Table单继承（元表）account = {} function account:new( o ) o = o or {} setmetatable(o,self) self.__index = self return o -- body end function account:show( v ) print(self.bb..v) -- body end a = account:new({bb = &#39;aa&#39;}) a:show(&#39;bb&#39;) -- aabb Table多继承(不常用)local function search(k,plist ) -- body for i=1,#plist do local v = plist[i][k] if v then return v end end end function createClass( ... ) -- body local c = {} local parent = {...} setmetatable(c,{__index = function ( t,k ) -- body return search(k,parent) end}) c.__index = c function c:new(o ) -- body o = o or {} setmetatable(o,c) return o end end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Lua中模块[modlue]]]></title>
+    <url>%2F2019%2F03%2F11%2FLua%E4%B8%AD%E6%A8%A1%E5%9D%97%5Bmodlue%5D%2F</url>
+    <content type="text"><![CDATA[require 直接引入文件-- aa.lua文件 function showName( v ) -- body print (&quot;哦哈呦&quot;..v) end -- a.lua 文件内引入aa.lua文件 require &quot;aa&quot; showName(&quot;\n加奈&quot;) -- 引入路径文件 app/test/cc.lua -- require(&quot;app.test.cc&quot;) 编写基本modlue模块-- mymodlue.lua 文件 -- 创建table complex = { } function complex.showName( ) -- body print (&#39;靠你起哇&#39;) end -- 返回table return complex 引用modlue函数（table中的函数）-- 引入modlue local t = require &quot;mymodlue&quot; t.showName()]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Lua串行化/序列化Serialization（串行流/字节流）]]></title>
+    <url>%2F2019%2F03%2F11%2FLua%E4%B8%B2%E8%A1%8C%E5%8C%96-%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%88%E4%B8%B2%E8%A1%8C%E6%B5%81-%E5%AD%97%E8%8A%82%E6%B5%81%EF%BC%89%2F</url>
+    <content type="text"><![CDATA[杂乱字符串转义显示处理-- 匹配符方式 string.format -- [=[...]=]方式 a = &#39;a &quot;program lua [[ ]]]]&quot;&#39; print(string.format(&#39;%q&#39;,a)) serialize(a) -- [=[a &quot;program lua [[ ]]]]&quot;]=] number、stirng、table序列化function serialize( o ) if type(o) == &quot;number&quot; then io.write(o) elseif type(o) == &quot;string&quot; then io.write(&quot;[=[&quot;,o,&quot;]=]&quot;) else print(&#39;b&#39;) end end -- 杂乱字符串转义显示处理 -- 匹配符方式 string.format -- [=[...]=]方式 a = &#39;a &quot;program lua [[ ]]]]&quot;&#39; print(string.format(&#39;%q&#39;,a)) serialize(a) -- [=[a &quot;program lua [[ ]]]]&quot;]=] -- 保存无环table function n_serialize( o ) if type(o) == &quot;number&quot; then io.write(o) elseif type(o) == &quot;string&quot; then io.write(string.format(&#39;%q&#39;,o)) elseif type(o) == &quot;table&quot; then io.write(&quot;{\n&quot;) for k,v in pairs(o) do io.write(&quot; &quot;, k, &quot;=&quot;) -- 递归调用 n_serialize(v) io.write(&quot;,\n&quot;) end io.write(&quot;}\n&quot;) else print(&#39;b&#39;) end end b = {lang = &quot;lua&quot;, content = &#39;&quot;dddd&quot;[[&quot;&#39;,3} n_serialize(b) --[[ { 1=3, lang=&quot;lua&quot;, content=&quot;\&quot;dddd\&quot;[[\&quot;&quot;, } --]]]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Lua Tabel(数据集-链表+键值对)]]></title>
+    <url>%2F2019%2F03%2F11%2FLua-Tabel(%E6%95%B0%E6%8D%AE%E9%9B%86-%E9%93%BE%E8%A1%A8%2B%E9%94%AE%E5%80%BC%E5%AF%B9)%2F</url>
+    <content type="text"><![CDATA[k是键值对还是索引 mytable = { k = &quot;a&quot; -- 这里的k是键值对 } print(mytable[k]) -- nil print(mytable[&quot;k&quot;]) -- a k = &quot;ok&quot; mytable[k] = &quot;b&quot; -- 这里的k是索引 print(mytable[k]) -- b print(mytable.k) -- a -- mytable.k 等价 mytable[&quot;k&quot;] ipairs与pairs – ipairs 迭代器与普通for do一致，按当前隐式索引去迭代显示 会将设定的键值对忽略！– pairs 迭代器将所有隐私索引、设定的键值对值都显示出来，但会不完全按书写顺序来索引! mytable2 = { a = &quot;ok&quot;, config = {1,2,3}, 8 } for i=1,#mytable2 do print(mytable2[i]) -- 8 end for i,v in ipairs(mytable2) do print(i,v) -- 1 8 end for k,v in pairs(mytable2) do print(k,v) -- 1 8 config table: 0x7fba7b4069d0 a ok end]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Lua用处及进行文件读写操作]]></title>
+    <url>%2F2019%2F03%2F10%2FLua%E7%94%A8%E5%A4%84%E5%8F%8A%E8%BF%9B%E8%A1%8C%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C%2F</url>
+    <content type="text"><![CDATA[1、作为第三方插件，集成到项目中，提供功能支持2、可以完全使用lua进行开发，如quick-cocos2d、coronaSDK3、更多时候，作为数据的配置集（即阵列） lua进行文件读写local function read_files( fileName ) -- r表示读取权限（read） a表示追加（append） w表示写入（write）b表示打开二进制（binary） -- &#39;r&#39;一定要单引号 local f = assert(io.open(fileName,&#39;r&#39;)) -- *all表示读取所有文件内容 *line表示读取一行 *number读取一个数字 &lt;num&gt;读取num字符长度的数据 local content = f:read(&quot;*all&quot;) -- 打开文件后一定要对应关闭 f:close() return content end print (read_files(&quot;nameList.txt&quot;)) -- 写内容 local f = assert(io.open(&quot;ok.txt&quot;,&#39;w&#39;)) f:write(&quot;hello&quot;) f:close() -- 追加内容 local f1 = assert(io.open(&quot;ok.txt&quot;,&#39;a&#39;)) f1:write(&quot;\n world&quot;) f1:close() -- 写入长内容 local function write_content( fileName,content ) -- &#39;a&#39;如果文件名不存在，跟w一样也会创建文件，然后追加内容 local f = assert(io.open(fileName,&#39;a&#39;)) f:write(content) f:close() end local long_str = [[ 这是长内容 这是长内容 ]] write_content(&quot;ok.txt&quot;,long_str)]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Lua</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[iOS逆向通过hook修改app]]></title>
+    <url>%2F2019%2F03%2F08%2FiOS%E9%80%86%E5%90%91%E9%80%9A%E8%BF%87hook%E4%BF%AE%E6%94%B9app%2F</url>
+    <content type="text"><![CDATA[抓包获取分发平台的ipa下载路径通过越狱设备抓包获取分发平台的ipa下载路径企业签名的App没有上架到商店,不用砸壳,直接zip解压缩找到可执行文件 判断ipa文件是否已砸壳https://www.jianshu.com/p/03a71b0cb95f 抓包分析应用安装到手机上,抓包分析一波看是否有Api直接可以使用,就不用逆向了,抓包用Charles或者Thor都行。一般接口都带Token请求,没有什么特别的接口可以利用。 网络扫描和主机检测工具nmapnmap分析看有无可利用端口。nmap超详细使用指南:https://crayon-xin.github.io/2018/08/12/nmap%E8%B6%85%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/ 自动化逆向工具MonkeyDevXcode新建一个MonkeyApp工程，直接把砸过壳的ipa扔进TargetApp目录，build运行在手机上。如运行失败，查看报错信息。若发现有些第三方库未安装，通过pod安装上。pod 的时候不要使用use_frameworks！MonkeyDev 已经集成class-dump，并支持Reveal。 应用成功在手机上运行后，打开Reveal查看app的View结构，通过class-dump获取项目.h头文件，打开Hooper动态分析源代码，定位到需要改写的方法进行hook。再在MonkeyDev里编写Tweek（破解补丁）代码来hook（钩子），Tweak支持CaptainHook、Logos两种语法。MonkeyDev里，logos语法的hook代码在logos文件夹下的.xm文件里编写。 MonkeyDev安装请直接看官方Wiki MonkeyDev自带Reveal与Mac上安装ReVeal版本不一致–新版Reveal没有libReveal.dylib文件:https://www.jianshu.com/p/dcce89a331d1MokeyDev 的logos tweak工程使用注意事项:https://segmentfault.com/a/1190000011891469MonkeyDev教程:https://www.jianshu.com/p/28eb7616fd3aiOS越狱的Tweak开发:https://www.jianshu.com/p/a5435650e828钩子函数Hook及ios下的原理:https://blog.csdn.net/camly/article/details/1752798https://blog.csdn.net/ZCMUCZX/article/details/80357965http://shengshui.com/?p=3462 class-dump的安装和使用class-dump从ipa中导出头文件：1、ipa文件，更改为zip格式，然后解压之后得到.app目标文件2、终端输入命令class-dump -H [.app文件的路径] -o [输出文件夹路径] class-dump -H /Users/mac/Desktop/Payload/Kt.app -o /Users/mac/Desktop/Payload https://www.jianshu.com/p/e0e05e49ade5 Reveal查看App的View层级https://www.jianshu.com/p/060745d5ecc2iOS更新系统10.13.4关于Reveal4的破解版和最新配置:https://www.jianshu.com/p/27f1951d6004 反汇编工具Hopper查看项目伪代码https://www.hopperapp.com/ Logos语法解析http://iphonedevwiki.net/index.php/Logoshttps://blog.csdn.net/AnTianyang/article/details/80530756 hook的方法有block参数应该怎么写http://iosre.com/t/hook-block/3184 逆向直播盒子https://www.jianshu.com/p/2a6090d733cd 更多链接iOSRE:http://iosre.com/块钩正确姿势:https://xiaozhuanlan.com/topic/4537826190IOS开发之逆向分析:https://yq.aliyun.com/articles/421714iOS 逆向实践记录（非越狱）:https://www.jianshu.com/p/2486b79a8eb9iOS 逆向工程资料整理:http://niyaoyao.me/2017/05/09/Learning-Reverse-From-Today-D4/我们一起来还原微信。希望通过 iWeChat 这个项目能过勾勒出微信的设计，使用到的技术手段等:https://github.com/lefex/iWeChatiOS的逆向分析笔记:https://www.jianshu.com/p/157f56d60a59如何用技術手段“幹掉”優酷、騰訊視訊 App 裡討厭的廣告:https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/592135/最简单的Hopper Disassembler玩转Mac逆向:https://www.jianshu.com/p/c04ac36c6641 iOS逆向之反Hook的基本防护https://www.jianshu.com/p/6a9b6ffb0349]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Mac下iTunes通过Charles抓取旧版iOSApp]]></title>
+    <url>%2F2019%2F03%2F08%2FMac%E4%B8%8BiTunes%E9%80%9A%E8%BF%87Charles%E6%8A%93%E5%8F%96%E6%97%A7%E7%89%88iOSApp%2F</url>
+    <content type="text"><![CDATA[iOS有其自身的软件安装包—IPA（iPhoneApplication）。只要我们能够获取这个app对应的旧版IPA，就可以用itunes等方式将其安装到我们的iPhone上面。 将iTunes降级到有应用菜单的版本https://mrmad.com.tw/downgrade-itunes 利用Charles breakpoint断点篡改请求让iTunes下载历史版本app“网络调试工具”surge不支持breakpoint。利用Charles抓取到应用下载请求，让后用breakpoint断点篡改请求参数中的应用版本号，从app store下载历史版本。 https://hiraku.tw/2015/12/4131/ app历史版本在线查询https://tools.lancely.tech/index 旧版、付费App安装在线网站http://kzddck.com/https://aneeo.com/ioshttps://nyxz166.cn/ 各大应用最佳版本号https://www.fengweishang.com/apple-old-ipa.html Tips本人账号下载的旧版app ipa 文件在百度网盘里]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Mac hexo ssl nginx 配置记录]]></title>
+    <url>%2F2019%2F02%2F28%2FMac-hexo-ssl-nginx-%E9%85%8D%E7%BD%AE%E8%AE%B0%E5%BD%95%2F</url>
+    <content type="text"><![CDATA[问题nginx: [emerg] open() &quot;/usr/local/Cellar/nginx/1.15.8/logs/nginx.pid&quot; failed (2: No such file or directory) 解决看报错提示说文件不存在,找到这个文件夹,发现/usr/local/Cellar/nginx/1.15.8/里面，确实没有logs文件夹。nginx.pid文件是动态生成删除的，那我们创建个logs文件夹就可以了。 执行命令，在1.15.8目录下创建logs目录并赋予最高读写权限：cd /usr/local/Cellar/nginx/1.15.8 mkdir logs &amp;&amp; chmod 777 logs 完成，sudo nginx -t 检测，成功！但是，sudo nginx -s reload 报错： sudo nginx -s reload nginx: [error] invalid PID number &quot;&quot; in &quot;/usr/local/Cellar/nginx/1.15.8/logs/nginx.pid&quot; 这个原因是nginx根本就没有启动过，所以pid文件的值为空没法平滑启动，先启动了才能平滑启动 输入：sudo nginx -c /usr/local/etc/nginx/nginx.conf //nginx.conf文件的路径可以从nginx -t的返回中找到。 又报错： nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use) 80端口已被占用(可能因为未成功关闭一些服务,如nginx服务等，也可能是其他服务占用了80端口,如Apache服务等,则把对应服务器关掉) 尝试关闭apache、nginx:sudo apachectl stop nginx -s stop nginx: [error] invalid PID number &quot;&quot; in &quot;/usr/local/Cellar/nginx/1.15.8/logs/nginx.pid&quot; 再选定配置文件并执行重启sudo nginx -c /usr/local/etc/nginx/nginx.conf sudo nginx -s reload 成功，无报错信息！ Tips如果遇到Permission denied报错， nginx: [emerg] bind() to 0.0.0.0:443 failed (13: Permission denied) 用sudo获取超级权限执行命令！ 更多Hexo 网站配置免费阿里云证书https://blog.csdn.net/lihao21/article/details/79439339]]></content>
+      <categories>
+        <category>Technology</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+      </tags>
+  </entry>
+</search>

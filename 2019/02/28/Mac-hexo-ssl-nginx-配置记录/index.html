@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140414783-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140414783-1');
+  </script>
+
+
+  
+  <meta charset="utf-8">
+  
+  <title>Mac hexo ssl nginx 配置记录 | 然亦伞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="问题nginx: [emerg] open() &amp;quot;/usr/local/Cellar/nginx/1.15.8/logs/nginx.pid&amp;quot; failed (2: No such file or directory) 解决看报错提示说文件不存在,找到这个文件夹,发现/usr/local/Cellar/nginx/1.15.8/里面，确实没有logs文件夹。nginx.pid文">
+<meta name="keywords" content="Mac">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac hexo ssl nginx 配置记录">
+<meta property="og:url" content="http://ranyisan.tk/2019/02/28/Mac-hexo-ssl-nginx-配置记录/index.html">
+<meta property="og:site_name" content="然亦伞">
+<meta property="og:description" content="问题nginx: [emerg] open() &amp;quot;/usr/local/Cellar/nginx/1.15.8/logs/nginx.pid&amp;quot; failed (2: No such file or directory) 解决看报错提示说文件不存在,找到这个文件夹,发现/usr/local/Cellar/nginx/1.15.8/里面，确实没有logs文件夹。nginx.pid文">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-03T07:23:58.217Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mac hexo ssl nginx 配置记录">
+<meta name="twitter:description" content="问题nginx: [emerg] open() &amp;quot;/usr/local/Cellar/nginx/1.15.8/logs/nginx.pid&amp;quot; failed (2: No such file or directory) 解决看报错提示说文件不存在,找到这个文件夹,发现/usr/local/Cellar/nginx/1.15.8/里面，确实没有logs文件夹。nginx.pid文">
+  
+  <link rel="stylesheet" href="/css/index.css">
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+ --></head>
+</html>
+<body style="
+
+
+  background-color: #eff0f6
+
+
+">
+  <div id="container">
+    <nav id="nav">
+  <header class="header">
+    <a href="/" class="title">然亦伞</a>
+  </header>
+  <div class="ctnWrap">
+    <div class="icons">
+      
+    </div>
+    <div class="menu">
+      
+        
+            <a href="/" class="nav-menu ">HOME</a>
+          
+        
+            <a href="/archives" class="nav-menu ">ARCHIVE</a>
+          
+        
+            <a href="/categories" class="nav-menu ">CATEGORY</a>
+          
+        
+            <a href="/tags" class="nav-menu ">TAG</a>
+          
+        
+            <a href="/about" class="nav-menu ">ABOUT</a>
+          
+        
+            <a href="/search" class="nav-menu ">SEARCH</a>
+          
+        
+      
+    </div>
+  </div>
+</nav>
+    <div id="main"><section class="article">
+  <h2 class="title">Mac hexo ssl nginx 配置记录</h2>
+  <p class="sub">
+    2月 28, 2019
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_page_pv"> 阅读量 <span id="busuanzi_value_page_pv"></span></span>
+    
+  </p>
+  <article class="content">
+    <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><pre><code>nginx: [emerg] open() &quot;/usr/local/Cellar/nginx/1.15.8/logs/nginx.pid&quot; failed (2: No such file or directory)
+</code></pre><h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>看报错提示说文件不存在,找到这个文件夹,发现/usr/local/Cellar/nginx/1.15.8/里面，确实没有logs文件夹。<br>nginx.pid文件是动态生成删除的，那我们创建个logs文件夹就可以了。</p>
+<h2 id="执行命令，在1-15-8目录下创建logs目录并赋予最高读写权限："><a href="#执行命令，在1-15-8目录下创建logs目录并赋予最高读写权限：" class="headerlink" title="执行命令，在1.15.8目录下创建logs目录并赋予最高读写权限："></a>执行命令，在1.15.8目录下创建logs目录并赋予最高读写权限：</h2><pre><code>cd /usr/local/Cellar/nginx/1.15.8 
+mkdir logs &amp;&amp; chmod 777 logs
+</code></pre><p>完成，sudo nginx -t 检测，成功！<br>但是，sudo nginx -s reload 报错：</p>
+<pre><code>sudo nginx -s reload
+nginx: [error] invalid PID number &quot;&quot; in &quot;/usr/local/Cellar/nginx/1.15.8/logs/nginx.pid&quot;
+</code></pre><p>这个原因是nginx根本就没有启动过，所以pid文件的值为空没法平滑启动，先启动了才能平滑启动</p>
+<h2 id="输入："><a href="#输入：" class="headerlink" title="输入："></a>输入：</h2><pre><code>sudo nginx -c /usr/local/etc/nginx/nginx.conf
+</code></pre><p>//nginx.conf文件的路径可以从nginx -t的返回中找到。</p>
+<p>又报错：</p>
+<pre><code>nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+</code></pre><p>80端口已被占用(可能因为未成功关闭一些服务,如nginx服务等，也可能是其他服务占用了80端口,如Apache服务等,则把对应服务器关掉)</p>
+<h2 id="尝试关闭apache、nginx"><a href="#尝试关闭apache、nginx" class="headerlink" title="尝试关闭apache、nginx:"></a>尝试关闭apache、nginx:</h2><pre><code>sudo apachectl stop
+nginx -s stop
+nginx: [error] invalid PID number &quot;&quot; in &quot;/usr/local/Cellar/nginx/1.15.8/logs/nginx.pid&quot;
+</code></pre><h2 id="再选定配置文件并执行重启"><a href="#再选定配置文件并执行重启" class="headerlink" title="再选定配置文件并执行重启"></a>再选定配置文件并执行重启</h2><pre><code>sudo nginx -c /usr/local/etc/nginx/nginx.conf
+sudo nginx -s reload
+</code></pre><p>成功，无报错信息！</p>
+<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2><p>如果遇到Permission denied报错，</p>
+<pre><code>nginx: [emerg] bind() to 0.0.0.0:443 failed (13: Permission denied)
+</code></pre><p>用sudo获取超级权限执行命令！</p>
+<h2 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h2><p>Hexo 网站配置免费阿里云证书<br><a href="https://blog.csdn.net/lihao21/article/details/79439339" target="_blank" rel="noopener">https://blog.csdn.net/lihao21/article/details/79439339</a></p>
+
+  </article>
+  <div class="comments"></div>
+  
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script>
+       new Valine({
+            el: '.comments',
+            appId: 'nTjHpFqxjOTtRsli4znbCbUI-gzGzoHsz',
+            appKey: 'QWPj5eE5Oe8oDr2dnQ0ku21R',
+            notify: false,
+            verify: true,
+            pageSize: 10,
+            placeholder: 'just go go' 
+        });
+    </script> 
+  
+  <footer class="f-cf">
+    
+      <a href="/2019/03/08/Mac下iTunes通过Charles抓取旧版iOSApp/" class="link f-fl">⟵Mac下iTunes通过Charles抓取旧版iOSApp</a>
+    
+    
+  </footer>
+</section></div>
+    <footer id="footer" class="f-cf">
+  ranyisan@163.com
+  
+  <span class="copyright">All rights reserved @ranyisan</span>
+</footer>
+  </div>
+</body>
+</html>

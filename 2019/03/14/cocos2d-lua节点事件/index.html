@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140414783-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-140414783-1');
+  </script>
+
+
+  
+  <meta charset="utf-8">
+  
+  <title>cocos2d-lua节点事件 | 然亦伞</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="节点事件在Node进入和退出场景时触发。也叫场景事件，它能被场景及其所有子节点监听.节点事件注册即触发，与帧事件需要调用scheduleUpdate()才启动不同。通常enter：在里面进行场景初始化工作。exit：如果转场使用了特效，在里面停止场景中的动画，避免切换场景的特效导致帧率下降。cleanup:进行清理工作。 node:addNodeEventListener(cc.NODE_EVEN">
+<meta name="keywords" content="Lua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos2d-lua节点事件">
+<meta property="og:url" content="http://ranyisan.tk/2019/03/14/cocos2d-lua节点事件/index.html">
+<meta property="og:site_name" content="然亦伞">
+<meta property="og:description" content="节点事件在Node进入和退出场景时触发。也叫场景事件，它能被场景及其所有子节点监听.节点事件注册即触发，与帧事件需要调用scheduleUpdate()才启动不同。通常enter：在里面进行场景初始化工作。exit：如果转场使用了特效，在里面停止场景中的动画，避免切换场景的特效导致帧率下降。cleanup:进行清理工作。 node:addNodeEventListener(cc.NODE_EVEN">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-27T21:49:07.287Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cocos2d-lua节点事件">
+<meta name="twitter:description" content="节点事件在Node进入和退出场景时触发。也叫场景事件，它能被场景及其所有子节点监听.节点事件注册即触发，与帧事件需要调用scheduleUpdate()才启动不同。通常enter：在里面进行场景初始化工作。exit：如果转场使用了特效，在里面停止场景中的动画，避免切换场景的特效导致帧率下降。cleanup:进行清理工作。 node:addNodeEventListener(cc.NODE_EVEN">
+  
+  <link rel="stylesheet" href="/css/index.css">
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+ --></head>
+</html>
+<body style="
+
+
+  background-color: #eff0f6
+
+
+">
+  <div id="container">
+    <nav id="nav">
+  <header class="header">
+    <a href="/" class="title">然亦伞</a>
+  </header>
+  <div class="ctnWrap">
+    <div class="icons">
+      
+    </div>
+    <div class="menu">
+      
+        
+            <a href="/" class="nav-menu ">HOME</a>
+          
+        
+            <a href="/archives" class="nav-menu ">ARCHIVE</a>
+          
+        
+            <a href="/categories" class="nav-menu ">CATEGORY</a>
+          
+        
+            <a href="/tags" class="nav-menu ">TAG</a>
+          
+        
+            <a href="/about" class="nav-menu ">ABOUT</a>
+          
+        
+            <a href="/search" class="nav-menu ">SEARCH</a>
+          
+        
+      
+    </div>
+  </div>
+</nav>
+    <div id="main"><section class="article">
+  <h2 class="title">cocos2d-lua节点事件</h2>
+  <p class="sub">
+    3月 14, 2019
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_page_pv"> 阅读量 <span id="busuanzi_value_page_pv"></span></span>
+    
+  </p>
+  <article class="content">
+    <p>节点事件在Node进入和退出场景时触发。也叫场景事件，它能被场景及其所有子节点监听.<br>节点事件注册即触发，与帧事件需要调用scheduleUpdate()才启动不同。<br>通常<br>enter：在里面进行场景初始化工作。<br>exit：如果转场使用了特效，在里面停止场景中的动画，避免切换场景的特效导致帧率下降。<br>cleanup:进行清理工作。</p>
+<pre><code>node:addNodeEventListener(cc.NODE_EVENT,function (event)
+    --[[
+    event参数只有name属性,值如下:
+    enter:场景加载
+    exit:场景退出
+    enterTransitionFinish:转场特效结束
+    exitTransitionStart:退出特效开始
+    cleanup:场景被完全清理并从内存删除
+    ]]
+    print (event.name)
+end)
+</code></pre><p>创建测试场景并进行节点监听</p>
+<pre><code>function MainScene:ctor()
+
+    self:createTestSceneForNodeEvent()
+
+end
+</code></pre><pre><code>function MainScene:createTestSceneForNodeEvent()
+
+    -- 创建场景并为场景添加节点事件
+    local function creatTestScene(name)
+        -- body
+        local scene = display.newScene(name)
+        scene:addNodeEventListener(cc.NODE_EVENT,function ( event )
+            -- 输出当前场景及当前场景的状态（enter、exit、enterTransitionFinish、exitTransitionStart、cleanup）
+            printf(&quot;node in scene [%s] NODE_ENENT:%s&quot;,name,event.name)
+        end)
+        return scene
+    end
+
+    --等待1.0秒创建第一个测试场景
+    self:performWithDelay(function ()
+        -- body
+        local scene1 = creatTestScene(&quot;scene1&quot;)
+        display.replaceScene(scene1)
+        --等待1.0秒创建第二个测试场景
+        scene1:performWithDelay(function ()
+            print(&#39;------------&#39;)
+            local scene2 = creatTestScene(&quot;scene2&quot;)
+            -- display.replaceScene(scene2)
+            display.replaceScene(scene2,&quot;random&quot;,1.0)
+        end,1.0)
+    end,1.0)
+
+end
+</code></pre><pre><code>--[[
+    控制台输出：
+    [LUA-print] node in scene [scene1] NODE_ENENT:enter
+    [LUA-print] node in scene [scene1] NODE_ENENT:enterTransitionFinish
+    [LUA-print] ------------
+    [LUA-print] node in scene [scene1] NODE_ENENT:exitTransitionStart
+    [LUA-print] node in scene [scene1] NODE_ENENT:exit
+    [LUA-print] node in scene [scene1] NODE_ENENT:cleanup
+    [LUA-print] node in scene [scene2] NODE_ENENT:enter
+    [LUA-print] node in scene [scene2] NODE_ENENT:enterTransitionFinish
+]]
+
+--[[
+    如果为scene2的跳转添加转场动画，择控制台输出：
+    [LUA-print] node in scene [scene1] NODE_ENENT:enter
+    [LUA-print] node in scene [scene1] NODE_ENENT:enterTransitionFinish
+    [LUA-print] ------------
+    [LUA-print] node in scene [scene1] NODE_ENENT:exitTransitionStart
+    [LUA-print] node in scene [scene2] NODE_ENENT:enter
+    [LUA-print] node in scene [scene1] NODE_ENENT:exit
+    [LUA-print] node in scene [scene2] NODE_ENENT:enterTransitionFinish
+    [LUA-print] node in scene [scene1] NODE_ENENT:cleanup
+]]
+</code></pre>
+  </article>
+  <div class="comments"></div>
+  
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+    <script>
+       new Valine({
+            el: '.comments',
+            appId: 'nTjHpFqxjOTtRsli4znbCbUI-gzGzoHsz',
+            appKey: 'QWPj5eE5Oe8oDr2dnQ0ku21R',
+            notify: false,
+            verify: true,
+            pageSize: 10,
+            placeholder: 'just go go' 
+        });
+    </script> 
+  
+  <footer class="f-cf">
+    
+      <a href="/2019/03/14/cocos2d-lua节点帧事件/" class="link f-fl">⟵cocos2d-lua节点帧事件</a>
+    
+    
+      <a href="/2019/03/14/cocos-2d-lua全局调度器与节点调度器/" class="link f-fr">cocos-2d lua全局调度器与节点调度器⟶</a>
+    
+  </footer>
+</section></div>
+    <footer id="footer" class="f-cf">
+  ranyisan@163.com
+  
+  <span class="copyright">All rights reserved @ranyisan</span>
+</footer>
+  </div>
+</body>
+</html>
